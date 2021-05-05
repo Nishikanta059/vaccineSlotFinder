@@ -15,7 +15,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter slot tracker',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -94,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Center(child: Text("Find slots")),
+        title: Center(child: Text("Find vaccine slots")),
         backgroundColor: Colors.purple[100],
       ),
       body: Center(
@@ -148,39 +149,53 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 20,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  new Radio(
-                    value: minAge.age18to45,
-                    groupValue: _character,
-                    onChanged: (value) {
-                      setState(() {
-                        _character = value;
-                        _MinimunAgeForSearch = 18;
-                      });
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      new Radio(
+                        value: minAge.age18to45,
+                        groupValue: _character,
+                        onChanged: (value) {
+                          setState(() {
+                            _character = value;
+                            _MinimunAgeForSearch = 18;
+                          });
+                        },
+                      ),
+                      Flexible(
+                        child: new Text(
+                          'age18to45',
+                          style: new TextStyle(fontSize: 16.0),
+                        ),
+                      ),
+                    ],
                   ),
-                  Flexible(
-                    child: new Text(
-                      minAge.age18to45.toString(),
-                      style: new TextStyle(fontSize: 16.0),
-                    ),
-                  ),
-                  new Radio(
-                    value: minAge.ageAbove45,
-                    groupValue: _character,
-                    onChanged: (value) {
-                      setState(() {
-                        _character = value;
-                        _MinimunAgeForSearch = 45;
-                      });
-                    },
-                  ),
-                  new Text(
-                    minAge.ageAbove45.toString(),
-                    style: new TextStyle(
-                      fontSize: 16.0,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      new Radio(
+                        value: minAge.ageAbove45,
+                        groupValue: _character,
+                        onChanged: (value) {
+                          setState(() {
+                            _character = value;
+                            _MinimunAgeForSearch = 45;
+                          });
+                        },
+                      ),
+                      Flexible(
+                        child: new Text(
+                          'ageAbove45',
+                          style: new TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
