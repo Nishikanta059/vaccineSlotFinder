@@ -3,6 +3,7 @@ import 'dart:convert' as convert;
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vaccine_slot_finder/about.dart';
 import 'package:vaccine_slot_finder/globalClass.dart';
 import 'package:intl/intl.dart';
 
@@ -97,6 +98,20 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Center(child: Text("Find vaccine slots")),
         backgroundColor: Colors.purple[100],
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return About();
+              }));
+            },
+            icon: Icon(
+              Icons.anchor_outlined,
+              color: Colors.blueGrey,
+            ),
+            label: Text(''),
+          )
+        ],
       ),
       body: Center(
         child: Padding(
