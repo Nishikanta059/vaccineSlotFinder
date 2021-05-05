@@ -114,247 +114,249 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              isStateLoaded
-                  ? DropdownSearch<String>(
-                      mode: Mode.MENU,
-                      showSelectedItem: true,
-                      showSearchBox: true,
-                      items: stateList,
-                      label: "Select State",
-                      hint: "country in menu mode",
-                      popupItemDisabled: (String s) => s.startsWith('I'),
-                      onChanged: (val) {
-                        setState(() {
-                          selectedState = val;
-                          isDistLoaded = false;
-                          getDist();
-                        });
-                      },
-                      selectedItem: "Odisha")
-                  : CircularProgressIndicator(),
-              SizedBox(
-                height: 25,
-              ),
-              isStateLoaded
-                  ? (isDistLoaded
-                      ? DropdownSearch<String>(
-                          mode: Mode.MENU,
-                          showSelectedItem: true,
-                          items: districtList,
-                          label: "select dist",
-                          hint: "select dist",
-                          popupItemDisabled: (String s) => s.startsWith('I'),
-                          onChanged: (val) {
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                isStateLoaded
+                    ? DropdownSearch<String>(
+                        mode: Mode.MENU,
+                        showSelectedItem: true,
+                        showSearchBox: true,
+                        items: stateList,
+                        label: "Select State",
+                        hint: "country in menu mode",
+                        popupItemDisabled: (String s) => s.startsWith('I'),
+                        onChanged: (val) {
+                          setState(() {
+                            selectedState = val;
+                            isDistLoaded = false;
+                            getDist();
+                          });
+                        },
+                        selectedItem: "Odisha")
+                    : CircularProgressIndicator(),
+                SizedBox(
+                  height: 25,
+                ),
+                isStateLoaded
+                    ? (isDistLoaded
+                        ? DropdownSearch<String>(
+                            mode: Mode.MENU,
+                            showSelectedItem: true,
+                            items: districtList,
+                            label: "select dist",
+                            hint: "select dist",
+                            popupItemDisabled: (String s) => s.startsWith('I'),
+                            onChanged: (val) {
+                              setState(() {
+                                selectedDist = val;
+                              });
+                            },
+                            selectedItem: selectedDist,
+                          )
+                        : CircularProgressIndicator())
+                    : SizedBox(
+                        height: 5,
+                      ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        new Radio(
+                          value: minAge.age18to45,
+                          groupValue: _character,
+                          onChanged: (value) {
                             setState(() {
-                              selectedDist = val;
+                              _character = value;
+                              _MinimunAgeForSearch = 18;
                             });
                           },
-                          selectedItem: selectedDist,
-                        )
-                      : CircularProgressIndicator())
-                  : SizedBox(
-                      height: 5,
-                    ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      new Radio(
-                        value: minAge.age18to45,
-                        groupValue: _character,
-                        onChanged: (value) {
-                          setState(() {
-                            _character = value;
-                            _MinimunAgeForSearch = 18;
-                          });
-                        },
-                      ),
-                      Flexible(
-                        child: new Text(
-                          'age18to45',
-                          style: new TextStyle(fontSize: 16.0),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      new Radio(
-                        value: minAge.ageAbove45,
-                        groupValue: _character,
-                        onChanged: (value) {
-                          setState(() {
-                            _character = value;
-                            _MinimunAgeForSearch = 45;
-                          });
-                        },
-                      ),
-                      Flexible(
-                        child: new Text(
-                          'ageAbove45',
-                          style: new TextStyle(
-                            fontSize: 16.0,
+                        Flexible(
+                          child: new Text(
+                            'age18to45',
+                            style: new TextStyle(fontSize: 16.0),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              ElevatedButton.icon(
-                onPressed: () {
-                  int tempDistID;
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        new Radio(
+                          value: minAge.ageAbove45,
+                          groupValue: _character,
+                          onChanged: (value) {
+                            setState(() {
+                              _character = value;
+                              _MinimunAgeForSearch = 45;
+                            });
+                          },
+                        ),
+                        Flexible(
+                          child: new Text(
+                            'ageAbove45',
+                            style: new TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    int tempDistID;
 
-                  tempState.districts.forEach((element) {
-                    if (selectedDist == element.districtName) {
-                      tempDistID = element.districtId;
-                    }
-                  });
-                  getCenterAvailBilityNsd(tempDistID);
-                  getCenterAvailBilityNsd2(tempDistID);
-                  getCenterAvailBilityNsd3(tempDistID);
-                  getCenterAvailBilityNsd4(tempDistID);
-                  setState(() {
-                    isSearchStart = true;
-                  });
-                },
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.white54,
+                    tempState.districts.forEach((element) {
+                      if (selectedDist == element.districtName) {
+                        tempDistID = element.districtId;
+                      }
+                    });
+                    getCenterAvailBilityNsd(tempDistID);
+                    getCenterAvailBilityNsd2(tempDistID);
+                    getCenterAvailBilityNsd3(tempDistID);
+                    getCenterAvailBilityNsd4(tempDistID);
+                    setState(() {
+                      isSearchStart = true;
+                    });
+                  },
+                  icon: Icon(
+                    Icons.search,
+                    color: Colors.white54,
+                  ),
+                  label: Text(
+                    "start search",
+                    style: TextStyle(color: Colors.white54),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blueGrey),
+                  ),
                 ),
-                label: Text(
-                  "start search",
-                  style: TextStyle(color: Colors.white54),
+                SizedBox(
+                  height: 18,
                 ),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blueGrey),
-                ),
-              ),
-              SizedBox(
-                height: 18,
-              ),
-              isSearchStart
-                  ? CircularProgressIndicator()
-                  : (!isSlotAvailable
-                      ? Column(
-                          children: [
-                            Divider(),
-                            Text('for next 7days form today'),
-                            Divider(),
-                            Text('slots available = $availableSlots')
-                          ],
-                        )
-                      : Column(
-                          children: [
-                            Divider(),
-                            Text('for next 7days form today'),
-                            Divider(),
-                            Text('slots available = $availableSlots'),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            TextButton(
-                              onPressed: _launchURL,
-                              child: Text('Book Now'),
-                            ),
-                          ],
-                        )),
-              isSearchStart
-                  ? CircularProgressIndicator()
-                  : (!isSlotAvailable2
-                      ? Column(
-                          children: [
-                            Divider(),
-                            Text('for next 7-14 days form today'),
-                            Divider(),
-                            Text('slots available = $availableSlots2')
-                          ],
-                        )
-                      : Column(
-                          children: [
-                            Divider(),
-                            Text('for next 7-14 days form today'),
-                            Divider(),
-                            Text('slots available = $availableSlots2'),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            TextButton(
-                              onPressed: _launchURL,
-                              child: Text('Book Now'),
-                            ),
-                          ],
-                        )),
-              isSearchStart
-                  ? CircularProgressIndicator()
-                  : (!isSlotAvailable3
-                      ? Column(
-                          children: [
-                            Divider(),
-                            Text('for next 14-21 days form today'),
-                            Divider(),
-                            Text('slots available = $availableSlots3')
-                          ],
-                        )
-                      : Column(
-                          children: [
-                            Divider(),
-                            Text('for next 14-21 days form today'),
-                            Divider(),
-                            Text('slots available = $availableSlots3'),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            TextButton(
-                              onPressed: _launchURL,
-                              child: Text('Book Now'),
-                            ),
-                          ],
-                        )),
-              isSearchStart
-                  ? CircularProgressIndicator()
-                  : (!isSlotAvailable4
-                      ? Column(
-                          children: [
-                            Divider(),
-                            Text('for next 21-28 days form today'),
-                            Divider(),
-                            Text('slots available = $availableSlots4')
-                          ],
-                        )
-                      : Column(
-                          children: [
-                            Divider(),
-                            Text('for next 21-28 days form today'),
-                            Divider(),
-                            Text('slots available = $availableSlots4'),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            TextButton(
-                              onPressed: _launchURL,
-                              child: Text('Book Now'),
-                            ),
-                          ],
-                        )),
-            ],
+                isSearchStart
+                    ? CircularProgressIndicator()
+                    : (!isSlotAvailable
+                        ? Column(
+                            children: [
+                              Divider(),
+                              Text('for next 7days form today'),
+                              Divider(),
+                              Text('slots available = $availableSlots')
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              Divider(),
+                              Text('for next 7days form today'),
+                              Divider(),
+                              Text('slots available = $availableSlots'),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextButton(
+                                onPressed: _launchURL,
+                                child: Text('Book Now'),
+                              ),
+                            ],
+                          )),
+                isSearchStart
+                    ? CircularProgressIndicator()
+                    : (!isSlotAvailable2
+                        ? Column(
+                            children: [
+                              Divider(),
+                              Text('for next 7-14 days form today'),
+                              Divider(),
+                              Text('slots available = $availableSlots2')
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              Divider(),
+                              Text('for next 7-14 days form today'),
+                              Divider(),
+                              Text('slots available = $availableSlots2'),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextButton(
+                                onPressed: _launchURL,
+                                child: Text('Book Now'),
+                              ),
+                            ],
+                          )),
+                isSearchStart
+                    ? CircularProgressIndicator()
+                    : (!isSlotAvailable3
+                        ? Column(
+                            children: [
+                              Divider(),
+                              Text('for next 14-21 days form today'),
+                              Divider(),
+                              Text('slots available = $availableSlots3')
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              Divider(),
+                              Text('for next 14-21 days form today'),
+                              Divider(),
+                              Text('slots available = $availableSlots3'),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextButton(
+                                onPressed: _launchURL,
+                                child: Text('Book Now'),
+                              ),
+                            ],
+                          )),
+                isSearchStart
+                    ? CircularProgressIndicator()
+                    : (!isSlotAvailable4
+                        ? Column(
+                            children: [
+                              Divider(),
+                              Text('for next 21-28 days form today'),
+                              Divider(),
+                              Text('slots available = $availableSlots4')
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              Divider(),
+                              Text('for next 21-28 days form today'),
+                              Divider(),
+                              Text('slots available = $availableSlots4'),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextButton(
+                                onPressed: _launchURL,
+                                child: Text('Book Now'),
+                              ),
+                            ],
+                          )),
+              ],
+            ),
           ),
         ),
       ),
