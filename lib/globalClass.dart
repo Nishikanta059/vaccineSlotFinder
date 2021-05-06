@@ -1,11 +1,16 @@
+import 'dart:html';
+
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:vaccine_slot_finder/settings.dart';
 
+enum minAge { age18to45, ageAbove45 }
 String deafultSearchMode = 'district';
+String deafultAgeGroup = EnumToString.convertToString(minAge.age18to45);
 String deafaultPincode = '744101';
 String defaultState = 'Odisha';
-String defaultDist = 'Khurdha';
-int dafaultStateID;
-int defaultDistID;
+String defaultDist = 'Khurda';
+String dafaultStateID = '26';
+String defaultDistID = '512';
 String autoRunStartDate;
 String autoRunDays;
 bool isAutoRunActive;
@@ -231,5 +236,37 @@ class Sessions {
     data['vaccine'] = this.vaccine;
     data['slots'] = this.slots;
     return data;
+  }
+}
+
+class CookieManager {
+  static CookieManager _manager;
+
+  static getInstance() {
+    if (_manager == null) {
+      _manager = CookieManager();
+    }
+    return _manager;
+  }
+
+  void addToCookie(String key, String value) {
+    // 2592000 sec = 30 days.
+    document.cookie = "$key=$value; max-age=2592000; path=/;";
+  }
+
+  String getCookie(String key) {
+    String cookies = document.cookie;
+    List<String> listValues = cookies.isNotEmpty ? cookies.split(";") : List();
+    String matchVal = "";
+    for (int i = 0; i < listValues.length; i++) {
+      List<String> map = listValues[i].split("=");
+      String _key = map[0].trim();
+      String _val = map[1].trim();
+      if (key == _key) {
+        matchVal = _val;
+        break;
+      }
+    }
+    return matchVal;
   }
 }

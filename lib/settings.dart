@@ -1,4 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -6,7 +7,8 @@ import 'package:vaccine_slot_finder/globalClass.dart';
 import 'dart:ui';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:vaccine_slot_finder/main.dart';
 
 class Settings extends StatefulWidget {
   final Country sCountry;
@@ -22,7 +24,8 @@ enum searchBy { pincode, district }
 class _SettingsState extends State<Settings> {
   List<String> stateList = [];
   List<String> districtList = [];
-  searchBy _radio = searchBy.district;
+  searchBy _radio = EnumToString.fromString(searchBy.values, deafultSearchMode);
+  minAge _character = minAge.age18to45;
   SelcState tempState;
   bool isStateLoaded = true;
   bool isDistLoaded = true;
@@ -42,157 +45,287 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var width = screenSize.width;
     return Scaffold(
         backgroundColor: Colors.pink[50],
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ),
+              );
+            },
+          ),
           backgroundColor: Colors.purple[100],
-          title: Text('about'),
+          title: Text('settings'),
         ),
         body: Container(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      new Radio(
-                        value: searchBy.pincode,
-                        groupValue: _radio,
-                        onChanged: (value) {
-                          setState(() {
-                            _radio = value;
-                            deafultSearchMode = 'pincode';
-                          });
-                        },
-                      ),
-                      Flexible(
-                        child: new Text(
-                          'age18to45',
-                          style: new TextStyle(fontSize: 16.0),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.deepPurpleAccent[400],
+              Colors.redAccent[400],
+            ],
+          )),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 25, 15, 0),
+            child: Column(
+              children: [
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+                        child: Column(
+                          children: [
+                            Center(child: Text("Search mode")),
+                            Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    new Radio(
+                                      value: searchBy.pincode,
+                                      groupValue: _radio,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _radio = value;
+                                          deafultSearchMode = 'pincode';
+                                        });
+                                      },
+                                    ),
+                                    Flexible(
+                                      child: new Text(
+                                        'pincode',
+                                        style: new TextStyle(fontSize: 16.0),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    new Radio(
+                                      value: searchBy.district,
+                                      groupValue: _radio,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _radio = value;
+                                          deafultSearchMode = 'district';
+                                        });
+                                      },
+                                    ),
+                                    Flexible(
+                                      child: new Text(
+                                        'district',
+                                        style: new TextStyle(
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      new Radio(
-                        value: searchBy.district,
-                        groupValue: _radio,
-                        onChanged: (value) {
-                          setState(() {
-                            _radio = value;
-                            deafultSearchMode = 'district';
-                          });
-                        },
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Column(
+                  children: [
+                    Center(child: Text("Age group")),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            new Radio(
+                              value: minAge.age18to45,
+                              groupValue: _character,
+                              onChanged: (value) {
+                                setState(() {
+                                  _character = value;
+                                  deafultAgeGroup =
+                                      EnumToString.convertToString(value);
+                                });
+                              },
+                            ),
+                            Flexible(
+                              child: new Text(
+                                'age18to45',
+                                style: new TextStyle(fontSize: 16.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            new Radio(
+                              value: minAge.ageAbove45,
+                              groupValue: _character,
+                              onChanged: (value) {
+                                setState(() {
+                                  _character = value;
+                                  deafultAgeGroup =
+                                      EnumToString.convertToString(value);
+                                });
+                              },
+                            ),
+                            Flexible(
+                              child: new Text(
+                                'ageAbove45',
+                                style: new TextStyle(
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                DropdownSearch<String>(
+                    mode: Mode.MENU,
+                    showSelectedItem: true,
+                    showSearchBox: true,
+                    items: stateList,
+                    label: "Select State",
+                    hint: "country in menu mode",
+                    popupItemDisabled: (String s) => s.startsWith('I'),
+                    onChanged: (value) {
+                      setState(() {
+                        defaultState = value;
+                        isDistLoaded = false;
+                        getDist();
+                      });
+                    },
+                    selectedItem: defaultState),
+                SizedBox(
+                  height: 15,
+                ),
+                isStateLoaded
+                    ? (isDistLoaded
+                        ? DropdownSearch<String>(
+                            mode: Mode.MENU,
+                            showSelectedItem: true,
+                            items: districtList,
+                            label: "select dist",
+                            hint: "select dist",
+                            popupItemDisabled: (String s) => s.startsWith('I'),
+                            onChanged: (val) {
+                              setState(() {
+                                defaultDist = val;
+                              });
+                            },
+                            selectedItem: defaultDist,
+                          )
+                        : CircularProgressIndicator())
+                    : SizedBox(
+                        height: 25,
                       ),
-                      Flexible(
-                        child: new Text(
-                          'ageAbove45',
-                          style: new TextStyle(
-                            fontSize: 16.0,
+                SizedBox(
+                  height: 25,
+                ),
+                Divider(),
+                Column(
+                  children: [
+                    Center(child: Text("pincode")),
+                    Divider(),
+                    Center(
+                      child: Container(
+                        width: width / 2.5,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "pincode",
+                            labelStyle: TextStyle(color: Colors.white),
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.blueGrey[900],
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.blueGrey[400],
+                                width: 2.0,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              DropdownSearch<String>(
-                  mode: Mode.MENU,
-                  showSelectedItem: true,
-                  showSearchBox: true,
-                  items: stateList,
-                  label: "Select State",
-                  hint: "country in menu mode",
-                  popupItemDisabled: (String s) => s.startsWith('I'),
-                  onChanged: (val) {
-                    setState(() {
-                      defaultState = val;
-                      isDistLoaded = false;
-                      getDist();
-                    });
-                  },
-                  selectedItem: "Odisha"),
-              SizedBox(
-                height: 15,
-              ),
-              isStateLoaded
-                  ? (isDistLoaded
-                      ? DropdownSearch<String>(
-                          mode: Mode.MENU,
-                          showSelectedItem: true,
-                          items: districtList,
-                          label: "select dist",
-                          hint: "select dist",
-                          popupItemDisabled: (String s) => s.startsWith('I'),
+                          keyboardType: TextInputType.number,
+                          initialValue: deafaultPincode,
                           onChanged: (val) {
                             setState(() {
-                              defaultDist = val;
+                              deafaultPincode = val;
                             });
                           },
-                          selectedItem: defaultDist,
-                        )
-                      : CircularProgressIndicator())
-                  : SizedBox(
-                      height: 15,
-                    ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                initialValue: deafaultPincode,
-                onChanged: (val) {
-                  setState(() {
-                    deafaultPincode = val;
-                  });
-                },
-              ),
-              Divider(),
-              SizedBox(
-                height: 30,
-              ),
-              isSaveStrart
-                  ? CircularProgressIndicator()
-                  : ElevatedButton.icon(
-                      onPressed: () {
-                        tempState.districts.forEach((element) {
-                          if (defaultDist == element.districtName) {
-                            defaultDistID = element.districtId;
-                          }
-                        });
-                        widget.sCountry.states.forEach((state) {
-                          if (defaultState == state.stateName) {
-                            defaultDistID = state.stateId;
-                          }
-                        });
-                        setState(() {
-                          isSaveStrart = true;
-                          saveToLocal();
-                        });
-                      },
-                      icon: Icon(
-                        Icons.adb,
-                        color: Colors.white54,
-                      ),
-                      label: Text(
-                        "save changes",
-                        style: TextStyle(color: Colors.white54),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.blueGrey[900]),
+                        ),
                       ),
                     ),
-            ],
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                isSaveStrart
+                    ? CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: () {
+                          tempState.districts.forEach((element) {
+                            if (defaultDist == element.districtName) {
+                              defaultDistID = element.districtId.toString();
+                            }
+                          });
+                          widget.sCountry.states.forEach((state) {
+                            if (defaultState == state.stateName) {
+                              defaultDistID = state.stateId.toString();
+                            }
+                          });
+                          setState(() {
+                            isSaveStrart = true;
+                            saveToLocal();
+                          });
+                        },
+                        child: Text(
+                          "save changes",
+                          style: TextStyle(color: Colors.white54),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.blueGrey[900]),
+                        ),
+                      ),
+              ],
+            ),
           ),
         ));
   }
@@ -234,17 +367,17 @@ class _SettingsState extends State<Settings> {
   }
 
   saveToLocal() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('defaultState', defaultState);
-    await prefs.setString('defaultDist', defaultDist);
-    await prefs.setString('deafaultPincode', deafaultPincode);
-    await prefs.setString('deafultSearchMode', deafultSearchMode);
-    await prefs.setInt('dafaultStateID', dafaultStateID);
-    await prefs.setInt('defaultDistID', defaultDistID);
-
+    CookieManager tempCookie = CookieManager.getInstance();
+    tempCookie.addToCookie('deafultSearchMode', deafultSearchMode);
+    tempCookie.addToCookie('deafaultPincode', deafaultPincode);
+    tempCookie.addToCookie('defaultState', defaultState);
+    tempCookie.addToCookie('defaultDist', defaultDist);
+    tempCookie.addToCookie('dafaultStateID', dafaultStateID);
+    tempCookie.addToCookie('defaultDistID', defaultDistID);
+    tempCookie.addToCookie('deafultAgeGroup', deafultAgeGroup);
     setState(() {
       isSaveStrart = false;
-      Fluttertoast.showToast(msg: "save successful");
+      Fluttertoast.showToast(msg: "Done!");
     });
   }
 }
