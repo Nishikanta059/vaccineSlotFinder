@@ -1,3 +1,16 @@
+import 'package:vaccine_slot_finder/settings.dart';
+
+String deafultSearchMode = 'district';
+String deafaultPincode = '744101';
+String defaultState = 'Odisha';
+String defaultDist = 'Khurdha';
+int dafaultStateID;
+int defaultDistID;
+String autoRunStartDate;
+String autoRunDays;
+bool isAutoRunActive;
+int aRReRunTimeInMin;
+
 class Country {
   List<States> states;
   int ttl;
