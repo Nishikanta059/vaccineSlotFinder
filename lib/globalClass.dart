@@ -1,7 +1,6 @@
 import 'dart:html';
 
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:vaccine_slot_finder/settings.dart';
 
 enum minAge { age18to45, ageAbove45 }
 String deafultSearchMode = 'district';

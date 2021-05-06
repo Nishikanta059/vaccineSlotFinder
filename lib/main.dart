@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
           end: Alignment.bottomLeft,
           colors: [
             Colors.deepPurpleAccent[400],
-            Colors.redAccent[400],
+            Colors.pink[200],
           ],
         )),
         child: BackdropFilter(

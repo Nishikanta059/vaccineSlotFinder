@@ -65,24 +65,24 @@ class _SettingsState extends State<Settings> {
           backgroundColor: Colors.purple[100],
           title: Text('settings'),
         ),
-        body: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Colors.deepPurpleAccent[400],
-              Colors.redAccent[400],
-            ],
-          )),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 25, 15, 0),
-            child: Column(
-              children: [
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                  child: Center(
-                    child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.deepPurpleAccent[400],
+                Colors.pink[200],
+              ],
+            )),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(15, 25, 15, 0),
+              child: Column(
+                children: [
+                  BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                    child: Center(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
                         child: Column(
@@ -146,185 +146,186 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Column(
-                  children: [
-                    Center(child: Text("Age group")),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            new Radio(
-                              value: minAge.age18to45,
-                              groupValue: _character,
-                              onChanged: (value) {
-                                setState(() {
-                                  _character = value;
-                                  deafultAgeGroup =
-                                      EnumToString.convertToString(value);
-                                });
-                              },
-                            ),
-                            Flexible(
-                              child: new Text(
-                                'age18to45',
-                                style: new TextStyle(fontSize: 16.0),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Column(
+                    children: [
+                      Center(child: Text("Age group")),
+                      Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              new Radio(
+                                value: minAge.age18to45,
+                                groupValue: _character,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _character = value;
+                                    deafultAgeGroup =
+                                        EnumToString.convertToString(value);
+                                  });
+                                },
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            new Radio(
-                              value: minAge.ageAbove45,
-                              groupValue: _character,
-                              onChanged: (value) {
+                              Flexible(
+                                child: new Text(
+                                  'age18to45',
+                                  style: new TextStyle(fontSize: 16.0),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              new Radio(
+                                value: minAge.ageAbove45,
+                                groupValue: _character,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _character = value;
+                                    deafultAgeGroup =
+                                        EnumToString.convertToString(value);
+                                  });
+                                },
+                              ),
+                              Flexible(
+                                child: new Text(
+                                  'ageAbove45',
+                                  style: new TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  DropdownSearch<String>(
+                      mode: Mode.MENU,
+                      showSelectedItem: true,
+                      showSearchBox: true,
+                      items: stateList,
+                      label: "Select State",
+                      hint: "country in menu mode",
+                      popupItemDisabled: (String s) => s.startsWith('I'),
+                      onChanged: (value) {
+                        setState(() {
+                          defaultState = value;
+                          isDistLoaded = false;
+                          getDist();
+                        });
+                      },
+                      selectedItem: defaultState),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  isStateLoaded
+                      ? (isDistLoaded
+                          ? DropdownSearch<String>(
+                              mode: Mode.MENU,
+                              showSelectedItem: true,
+                              items: districtList,
+                              label: "select dist",
+                              hint: "select dist",
+                              popupItemDisabled: (String s) =>
+                                  s.startsWith('I'),
+                              onChanged: (val) {
                                 setState(() {
-                                  _character = value;
-                                  deafultAgeGroup =
-                                      EnumToString.convertToString(value);
+                                  defaultDist = val;
                                 });
                               },
-                            ),
-                            Flexible(
-                              child: new Text(
-                                'ageAbove45',
-                                style: new TextStyle(
-                                  fontSize: 16.0,
+                              selectedItem: defaultDist,
+                            )
+                          : CircularProgressIndicator())
+                      : SizedBox(
+                          height: 25,
+                        ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Divider(),
+                  Column(
+                    children: [
+                      Center(child: Text("pincode")),
+                      Divider(),
+                      Center(
+                        child: Container(
+                          width: width / 2.5,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "pincode",
+                              labelStyle: TextStyle(color: Colors.white),
+                              fillColor: Colors.white,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: Colors.blueGrey[900],
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: Colors.blueGrey[400],
+                                  width: 2.0,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                DropdownSearch<String>(
-                    mode: Mode.MENU,
-                    showSelectedItem: true,
-                    showSearchBox: true,
-                    items: stateList,
-                    label: "Select State",
-                    hint: "country in menu mode",
-                    popupItemDisabled: (String s) => s.startsWith('I'),
-                    onChanged: (value) {
-                      setState(() {
-                        defaultState = value;
-                        isDistLoaded = false;
-                        getDist();
-                      });
-                    },
-                    selectedItem: defaultState),
-                SizedBox(
-                  height: 15,
-                ),
-                isStateLoaded
-                    ? (isDistLoaded
-                        ? DropdownSearch<String>(
-                            mode: Mode.MENU,
-                            showSelectedItem: true,
-                            items: districtList,
-                            label: "select dist",
-                            hint: "select dist",
-                            popupItemDisabled: (String s) => s.startsWith('I'),
+                            keyboardType: TextInputType.number,
+                            initialValue: deafaultPincode,
                             onChanged: (val) {
                               setState(() {
-                                defaultDist = val;
+                                deafaultPincode = val;
                               });
                             },
-                            selectedItem: defaultDist,
-                          )
-                        : CircularProgressIndicator())
-                    : SizedBox(
-                        height: 25,
-                      ),
-                SizedBox(
-                  height: 25,
-                ),
-                Divider(),
-                Column(
-                  children: [
-                    Center(child: Text("pincode")),
-                    Divider(),
-                    Center(
-                      child: Container(
-                        width: width / 2.5,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            labelText: "pincode",
-                            labelStyle: TextStyle(color: Colors.white),
-                            fillColor: Colors.white,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.blueGrey[900],
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.blueGrey[400],
-                                width: 2.0,
-                              ),
-                            ),
                           ),
-                          keyboardType: TextInputType.number,
-                          initialValue: deafaultPincode,
-                          onChanged: (val) {
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  isSaveStrart
+                      ? CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: () {
+                            tempState.districts.forEach((element) {
+                              if (defaultDist == element.districtName) {
+                                defaultDistID = element.districtId.toString();
+                              }
+                            });
+                            widget.sCountry.states.forEach((state) {
+                              if (defaultState == state.stateName) {
+                                defaultDistID = state.stateId.toString();
+                              }
+                            });
                             setState(() {
-                              deafaultPincode = val;
+                              isSaveStrart = true;
+                              saveToLocal();
                             });
                           },
+                          child: Text(
+                            "save changes",
+                            style: TextStyle(color: Colors.white54),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.blueGrey[900]),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                isSaveStrart
-                    ? CircularProgressIndicator()
-                    : ElevatedButton(
-                        onPressed: () {
-                          tempState.districts.forEach((element) {
-                            if (defaultDist == element.districtName) {
-                              defaultDistID = element.districtId.toString();
-                            }
-                          });
-                          widget.sCountry.states.forEach((state) {
-                            if (defaultState == state.stateName) {
-                              defaultDistID = state.stateId.toString();
-                            }
-                          });
-                          setState(() {
-                            isSaveStrart = true;
-                            saveToLocal();
-                          });
-                        },
-                        child: Text(
-                          "save changes",
-                          style: TextStyle(color: Colors.white54),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.blueGrey[900]),
-                        ),
-                      ),
-              ],
+                ],
+              ),
             ),
           ),
         ));
