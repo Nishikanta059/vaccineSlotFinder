@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "7964754438",
+    "project_id": "vaccineslotfinder",
+    "storage_bucket": "vaccineslotfinder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7964754438:android:7ac448834806ea27fef987",
+        "android_client_info": {
+          "package_name": "com.example.vaccine_slot_finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7964754438-0hrj8uhmiq9af83e1vqb7aeieshik72m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTYlhPInGHP-_PvWaX7OtELF9A9lbHCUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7964754438-0hrj8uhmiq9af83e1vqb7aeieshik72m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
