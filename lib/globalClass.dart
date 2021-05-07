@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:enum_to_string/enum_to_string.dart';
 
 enum minAge { age18to45, ageAbove45 }
+
 String deafultSearchMode = 'district';
 String deafultAgeGroup = EnumToString.convertToString(minAge.age18to45);
 String deafaultPincode = '744101';
@@ -11,9 +12,10 @@ String defaultDist = 'Khurda';
 String dafaultStateID = '26';
 String defaultDistID = '512';
 String autoRunStartDate;
+String autoRunEndDate;
 String autoRunDays;
-bool isAutoRunActive;
-int aRReRunTimeInMin;
+String isAutoRunActive = 'no';
+String aRReRunTimeInMin = '10';
 
 class Country {
   List<States> states;

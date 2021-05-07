@@ -10,6 +10,7 @@ import 'package:vaccine_slot_finder/about.dart';
 import 'package:vaccine_slot_finder/globalClass.dart';
 import 'package:intl/intl.dart';
 import 'package:vaccine_slot_finder/settings.dart';
+import 'package:vaccine_slot_finder/timer.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      // home: CountDownTimer(),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -85,13 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
   minAge _character;
   String _url = "https://selfregistration.cowin.gov.in/";
   @override
-  void initState() {
-    // TODO: implement initState
-    initializeGlobalVariable();
-    getStates();
-
-    super.initState();
-  }
+  // void initState() {
+  //   // TODO: implement initState
+  //   initializeGlobalVariable();
+  //   getStates();
+  //
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -842,7 +844,18 @@ class _MyHomePageState extends State<MyHomePage> {
     tempCookie.getCookie('deafultAgeGroup') != ""
         ? deafultAgeGroup = tempCookie.getCookie('deafultAgeGroup')
         : null;
-
+    tempCookie.getCookie('autoRunStartDate') != ""
+        ? autoRunStartDate = tempCookie.getCookie('autoRunStartDate')
+        : autoRunStartDate = DateTime.now().toString();
+    tempCookie.getCookie('autoRunEndDate') != ""
+        ? autoRunEndDate = tempCookie.getCookie('autoRunEndDate')
+        : autoRunEndDate = DateTime.now().toString();
+    tempCookie.getCookie('isAutoRunActive') != ""
+        ? isAutoRunActive = tempCookie.getCookie('isAutoRunActive')
+        : null;
+    tempCookie.getCookie('aRReRunTimeInMin') != ""
+        ? aRReRunTimeInMin = tempCookie.getCookie('aRReRunTimeInMin')
+        : null;
     selectedState = defaultState;
     selectedDist = defaultDist;
     selectedPin = deafaultPincode;

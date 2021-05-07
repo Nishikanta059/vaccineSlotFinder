@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,8 @@ class _SettingsState extends State<Settings> {
   bool isStateLoaded = true;
   bool isDistLoaded = true;
   bool isSaveStrart = false;
+  DateTime selectedStartDate = DateTime.now();
+  DateTime selectedEndDate = DateTime.now();
   @override
   void initState() {
     // TODO: implement initState
@@ -214,7 +218,6 @@ class _SettingsState extends State<Settings> {
                   DropdownSearch<String>(
                       mode: Mode.MENU,
                       showSelectedItem: true,
-                      showSearchBox: true,
                       items: stateList,
                       label: "Select State",
                       hint: "country in menu mode",
@@ -296,6 +299,103 @@ class _SettingsState extends State<Settings> {
                   SizedBox(
                     height: 30,
                   ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Switch(
+                            value: aRReRunTimeInMin == "yes" ? true : false,
+                            activeColor: Colors.green,
+                            inactiveThumbColor: Colors.blueGrey,
+                            onChanged: (val) {
+                              print("------switch------");
+                              print(val);
+                              if (val == true) {
+                                setState(() {
+                                  aRReRunTimeInMin = "yes";
+                                });
+                              } else {
+                                aRReRunTimeInMin = "no";
+                              }
+                            },
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextButton.icon(
+                                  onPressed: () {
+                                    _selectDateStart(context);
+                                  },
+                                  icon: Icon(Icons.calendar_today),
+                                  label: Text("start date")),
+                              Text(autoRunStartDate),
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextButton.icon(
+                                  onPressed: () {
+                                    _selectDateEnd(context);
+                                  },
+                                  icon: Icon(Icons.calendar_today),
+                                  label: Text("start date")),
+                              Text(autoRunEndDate),
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('refresh time'),
+                              DropdownButton(
+                                value: aRReRunTimeInMin,
+                                items: <DropdownMenuItem>[
+                                  DropdownMenuItem(
+                                    value: '5',
+                                    child: Text('5 min'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: '10',
+                                    child: Text('10 min'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: '15',
+                                    child: Text('15 min'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: '30',
+                                    child: Text('30 min'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: '45',
+                                    child: Text('45 min'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: '60',
+                                    child: Text('60 min'),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    aRReRunTimeInMin = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
                   isSaveStrart
                       ? CircularProgressIndicator()
                       : ElevatedButton(
@@ -367,6 +467,30 @@ class _SettingsState extends State<Settings> {
     }
   }
 
+  Future<void> _selectDateStart(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.parse(autoRunStartDate),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(const Duration(days: 27)));
+    if (pickedDate != null && pickedDate != selectedStartDate)
+      setState(() {
+        autoRunStartDate = pickedDate.toString();
+      });
+  }
+
+  Future<void> _selectDateEnd(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.parse(autoRunEndDate),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(const Duration(days: 27)));
+    if (pickedDate != null && pickedDate != selectedEndDate)
+      setState(() {
+        autoRunEndDate = pickedDate.toString();
+      });
+  }
+
   saveToLocal() async {
     CookieManager tempCookie = CookieManager.getInstance();
     tempCookie.addToCookie('deafultSearchMode', deafultSearchMode);
@@ -376,6 +500,10 @@ class _SettingsState extends State<Settings> {
     tempCookie.addToCookie('dafaultStateID', dafaultStateID);
     tempCookie.addToCookie('defaultDistID', defaultDistID);
     tempCookie.addToCookie('deafultAgeGroup', deafultAgeGroup);
+    tempCookie.addToCookie('autoRunStartDate', autoRunStartDate);
+    tempCookie.addToCookie('autoRunEndDate', autoRunEndDate);
+    tempCookie.addToCookie('aRReRunTimeInMin', aRReRunTimeInMin);
+    tempCookie.addToCookie('isAutoRunActive', isAutoRunActive);
     setState(() {
       isSaveStrart = false;
       Fluttertoast.showToast(msg: "Done!");
