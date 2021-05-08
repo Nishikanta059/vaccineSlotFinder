@@ -4,6 +4,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vaccine_slot_finder/about.dart';
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isSlotAvailable4 = false;
   bool isSlotAvailabled = false;
   bool isSearchDone = false;
-  bool isSearchStart = false;
+  // bool isSearchStart = false;
   int availableSlots = 0;
   int availableSlots2 = 0;
   int availableSlots3 = 0;
@@ -99,6 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("----==refresh==-------");
+    // print(isSearchStart.toString());
     var screenSize = MediaQuery.of(context).size;
     var width = screenSize.width;
     return Scaffold(
@@ -320,9 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         getCenterAvailBilityDR();
                       }
 
-                      setState(() {
-                        isSearchStart = true;
-                      });
+                      Fluttertoast.showToast(msg: "searching..");
                     },
                     icon: Icon(
                       Icons.search,
@@ -340,149 +341,154 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(
                     height: 18,
                   ),
-                  isSearchStart
-                      ? CircularProgressIndicator()
-                      : (!isSlotAvailabled
-                          ? Column(
-                              children: [
-                                Divider(),
-                                Text("from  " +
-                                    DateFormat('dd-MM-yyyy').format(
-                                        DateTime.parse(autoRunStartDate)) +
-                                    " to " +
-                                    DateFormat('dd-MM-yyyy').format(
-                                        DateTime.parse(autoRunEndDate))),
-                                Divider(),
-                                Text('slots available = $availableSlotsd')
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                Divider(),
-                                Text("from  " +
-                                    DateFormat('dd-MM-yyyy').format(
-                                        DateTime.parse(autoRunStartDate)) +
-                                    " to " +
-                                    DateFormat('dd-MM-yyyy').format(
-                                        DateTime.parse(autoRunEndDate))),
-                                Divider(),
-                                Text('slots available = $availableSlotsd'),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextButton(
-                                  onPressed: _launchURL,
-                                  child: Text('Book Now'),
-                                ),
-                              ],
-                            )),
+                  // isSearchStart
+                  //     ? CircularProgressIndicator()
+                  //     :
+                  (!isSlotAvailabled
+                      ? Column(
+                          children: [
+                            Divider(),
+                            Text("from  " +
+                                DateFormat('dd-MM-yyyy')
+                                    .format(DateTime.parse(autoRunStartDate)) +
+                                " to " +
+                                DateFormat('dd-MM-yyyy')
+                                    .format(DateTime.parse(autoRunEndDate))),
+                            Divider(),
+                            Text('slots available = $availableSlotsd')
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Divider(),
+                            Text("from  " +
+                                DateFormat('dd-MM-yyyy')
+                                    .format(DateTime.parse(autoRunStartDate)) +
+                                " to " +
+                                DateFormat('dd-MM-yyyy')
+                                    .format(DateTime.parse(autoRunEndDate))),
+                            Divider(),
+                            Text('slots available = $availableSlotsd'),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextButton(
+                              onPressed: _launchURL,
+                              child: Text('Book Now'),
+                            ),
+                          ],
+                        )),
                   SizedBox(
                     height: 18,
                   ),
-                  isSearchStart
-                      ? CircularProgressIndicator()
-                      : (!isSlotAvailable
-                          ? Column(
-                              children: [
-                                Divider(),
-                                Text('for next 7days form today'),
-                                Divider(),
-                                Text('slots available = $availableSlots')
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                Divider(),
-                                Text('for next 7days form today'),
-                                Divider(),
-                                Text('slots available = $availableSlots'),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextButton(
-                                  onPressed: _launchURL,
-                                  child: Text('Book Now'),
-                                ),
-                              ],
-                            )),
-                  isSearchStart
-                      ? CircularProgressIndicator()
-                      : (!isSlotAvailable2
-                          ? Column(
-                              children: [
-                                Divider(),
-                                Text('for next 7-14 days form today'),
-                                Divider(),
-                                Text('slots available = $availableSlots2')
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                Divider(),
-                                Text('for next 7-14 days form today'),
-                                Divider(),
-                                Text('slots available = $availableSlots2'),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextButton(
-                                  onPressed: _launchURL,
-                                  child: Text('Book Now'),
-                                ),
-                              ],
-                            )),
-                  isSearchStart
-                      ? CircularProgressIndicator()
-                      : (!isSlotAvailable3
-                          ? Column(
-                              children: [
-                                Divider(),
-                                Text('for next 14-21 days form today'),
-                                Divider(),
-                                Text('slots available = $availableSlots3')
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                Divider(),
-                                Text('for next 14-21 days form today'),
-                                Divider(),
-                                Text('slots available = $availableSlots3'),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextButton(
-                                  onPressed: _launchURL,
-                                  child: Text('Book Now'),
-                                ),
-                              ],
-                            )),
-                  isSearchStart
-                      ? CircularProgressIndicator()
-                      : (!isSlotAvailable4
-                          ? Column(
-                              children: [
-                                Divider(),
-                                Text('for next 21-28 days form today'),
-                                Divider(),
-                                Text('slots available = $availableSlots4')
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                Divider(),
-                                Text('for next 21-28 days form today'),
-                                Divider(),
-                                Text('slots available = $availableSlots4'),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextButton(
-                                  onPressed: _launchURL,
-                                  child: Text('Book Now'),
-                                ),
-                              ],
-                            )),
+                  // isSearchStart
+                  //     ? CircularProgressIndicator()
+                  //     :
+                  (!isSlotAvailable
+                      ? Column(
+                          children: [
+                            Divider(),
+                            Text('for next 7days form today'),
+                            Divider(),
+                            Text('slots available = $availableSlots')
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Divider(),
+                            Text('for next 7days form today'),
+                            Divider(),
+                            Text('slots available = $availableSlots'),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextButton(
+                              onPressed: _launchURL,
+                              child: Text('Book Now'),
+                            ),
+                          ],
+                        )),
+                  // isSearchStart
+                  //     ? CircularProgressIndicator()
+                  //     :
+                  (!isSlotAvailable2
+                      ? Column(
+                          children: [
+                            Divider(),
+                            Text('for next 7-14 days form today'),
+                            Divider(),
+                            Text('slots available = $availableSlots2')
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Divider(),
+                            Text('for next 7-14 days form today'),
+                            Divider(),
+                            Text('slots available = $availableSlots2'),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextButton(
+                              onPressed: _launchURL,
+                              child: Text('Book Now'),
+                            ),
+                          ],
+                        )),
+                  // isSearchStart
+                  //     ? CircularProgressIndicator()
+                  //     :
+                  (!isSlotAvailable3
+                      ? Column(
+                          children: [
+                            Divider(),
+                            Text('for next 14-21 days form today'),
+                            Divider(),
+                            Text('slots available = $availableSlots3')
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Divider(),
+                            Text('for next 14-21 days form today'),
+                            Divider(),
+                            Text('slots available = $availableSlots3'),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextButton(
+                              onPressed: _launchURL,
+                              child: Text('Book Now'),
+                            ),
+                          ],
+                        )),
+                  // isSearchStart
+                  //     ? CircularProgressIndicator()
+                  //     :
+                  (!isSlotAvailable4
+                      ? Column(
+                          children: [
+                            Divider(),
+                            Text('for next 21-28 days form today'),
+                            Divider(),
+                            Text('slots available = $availableSlots4')
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Divider(),
+                            Text('for next 21-28 days form today'),
+                            Divider(),
+                            Text('slots available = $availableSlots4'),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextButton(
+                              onPressed: _launchURL,
+                              child: Text('Book Now'),
+                            ),
+                          ],
+                        )),
                 ],
               ),
             ),
@@ -564,6 +570,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final String formatted = formatter.format(now);
     availableSlots = 0;
     isSlotAvailable = false;
+    print("nsd 1");
     print(formatted);
 
     var url = Uri.parse(
@@ -586,11 +593,11 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (availableSlots != 0) isSlotAvailable = true;
 
-        isSearchStart = false;
+        // isSearchStart = false;
       });
     } else {
       setState(() {
-        isSearchStart = false;
+        // isSearchStart = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -626,11 +633,11 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (availableSlots != 0) isSlotAvailable = true;
 
-        isSearchStart = false;
+        // isSearchStart = false;
       });
     } else {
       setState(() {
-        isSearchStart = false;
+        // isSearchStart = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -642,6 +649,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final String formatted = formatter.format(now);
     availableSlots2 = 0;
     isSlotAvailable2 = false;
+    print("nsd2");
     print(formatted);
 
     var url = Uri.parse(
@@ -664,11 +672,11 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (availableSlots2 != 0) isSlotAvailable2 = true;
 
-        isSearchStart = false;
+        // isSearchStart = false;
       });
     } else {
       setState(() {
-        isSearchStart = false;
+        // isSearchStart = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -702,22 +710,23 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (availableSlots2 != 0) isSlotAvailable2 = true;
 
-        isSearchStart = false;
+        // isSearchStart = false;
       });
     } else {
       setState(() {
-        isSearchStart = false;
+        // isSearchStart = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
   }
 
   getCenterAvailBilityNsd3(int distID) async {
-    final DateTime now = DateTime.now().add(const Duration(days: 7));
+    final DateTime now = DateTime.now().add(const Duration(days: 14));
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     final String formatted = formatter.format(now);
     availableSlots3 = 0;
     isSlotAvailable3 = false;
+    print("nsd3");
     print(formatted);
 
     var url = Uri.parse(
@@ -740,11 +749,11 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (availableSlots3 != 0) isSlotAvailable3 = true;
 
-        isSearchStart = false;
+        // isSearchStart = false;
       });
     } else {
       setState(() {
-        isSearchStart = false;
+        // isSearchStart = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -778,11 +787,11 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (availableSlots3 != 0) isSlotAvailable3 = true;
 
-        isSearchStart = false;
+        // isSearchStart = false;
       });
     } else {
       setState(() {
-        isSearchStart = false;
+        // isSearchStart = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -795,6 +804,7 @@ class _MyHomePageState extends State<MyHomePage> {
     availableSlots4 = 0;
     isSlotAvailable4 = false;
     print(formatted);
+    print("nsd3");
 
     var url = Uri.parse(
         'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
@@ -816,11 +826,11 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (availableSlots4 != 0) isSlotAvailable4 = true;
 
-        isSearchStart = false;
+        // isSearchStart = false;
       });
     } else {
       setState(() {
-        isSearchStart = false;
+        // isSearchStart = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -854,11 +864,11 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         if (availableSlots4 != 0) isSlotAvailable4 = true;
 
-        isSearchStart = false;
+        // isSearchStart = false;
       });
     } else {
       setState(() {
-        isSearchStart = false;
+        // isSearchStart = false;
       });
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -945,7 +955,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     setState(() {
       if (availableSlotsd != 0) isSlotAvailabled = true;
-      isSearchStart = false;
+      // isSearchStart = false;
+      // print("----=====");
+      // print(isSearchStart.toString());
     });
   }
 
