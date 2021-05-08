@@ -10,7 +10,6 @@ import 'package:vaccine_slot_finder/about.dart';
 import 'package:vaccine_slot_finder/globalClass.dart';
 import 'package:intl/intl.dart';
 import 'package:vaccine_slot_finder/settings.dart';
-import 'package:vaccine_slot_finder/timer.dart';
 
 void main() {
   runApp(MyApp());
@@ -77,23 +76,26 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isSlotAvailable2 = false;
   bool isSlotAvailable3 = false;
   bool isSlotAvailable4 = false;
+  bool isSlotAvailabled = false;
   bool isSearchDone = false;
   bool isSearchStart = false;
   int availableSlots = 0;
   int availableSlots2 = 0;
   int availableSlots3 = 0;
   int availableSlots4 = 0;
+  int availableSlotsd = 0;
+  DistCenters tempCenters, tempCenters2, tempCenters3, tempCenters4;
 
   minAge _character;
   String _url = "https://selfregistration.cowin.gov.in/";
   @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   initializeGlobalVariable();
-  //   getStates();
-  //
-  //   super.initState();
-  // }
+  void initState() {
+    // TODO: implement initState
+    initializeGlobalVariable();
+    // getStates();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -305,11 +307,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         getCenterAvailBilityNsd2(tempDistID);
                         getCenterAvailBilityNsd3(tempDistID);
                         getCenterAvailBilityNsd4(tempDistID);
+                        getCenterAvailBilityDR();
                       } else {
                         getCenterAvailBilityNsdpin(int.parse(selectedPin));
                         getCenterAvailBilityNsdpin2(int.parse(selectedPin));
                         getCenterAvailBilityNsdpin3(int.parse(selectedPin));
                         getCenterAvailBilityNsdpin4(int.parse(selectedPin));
+                        getCenterAvailBilityDR();
                       }
 
                       setState(() {
@@ -329,6 +333,45 @@ class _MyHomePageState extends State<MyHomePage> {
                           Colors.blueGrey[900]),
                     ),
                   ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  isSearchStart
+                      ? CircularProgressIndicator()
+                      : (!isSlotAvailabled
+                          ? Column(
+                              children: [
+                                Divider(),
+                                Text("from  " +
+                                    DateFormat('dd-MM-yyyy').format(
+                                        DateTime.parse(autoRunStartDate)) +
+                                    " to " +
+                                    DateFormat('dd-MM-yyyy').format(
+                                        DateTime.parse(autoRunEndDate))),
+                                Divider(),
+                                Text('slots available = $availableSlotsd')
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                Divider(),
+                                Text("from  " +
+                                    DateFormat('dd-MM-yyyy').format(
+                                        DateTime.parse(autoRunStartDate)) +
+                                    " to " +
+                                    DateFormat('dd-MM-yyyy').format(
+                                        DateTime.parse(autoRunEndDate))),
+                                Divider(),
+                                Text('slots available = $availableSlotsd'),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                TextButton(
+                                  onPressed: _launchURL,
+                                  child: Text('Book Now'),
+                                ),
+                              ],
+                            )),
                   SizedBox(
                     height: 18,
                   ),
@@ -527,7 +570,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      DistCenters tempCenters = DistCenters.fromJson(jsonResponse);
+      tempCenters = DistCenters.fromJson(jsonResponse);
       print(tempCenters.centers.length);
       tempCenters.centers.forEach((val) {
         val.sessions.forEach((element) {
@@ -567,7 +610,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      DistCenters tempCenters = DistCenters.fromJson(jsonResponse);
+      tempCenters = DistCenters.fromJson(jsonResponse);
       print(tempCenters.centers.length);
       tempCenters.centers.forEach((val) {
         val.sessions.forEach((element) {
@@ -605,7 +648,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      DistCenters tempCenters2 = DistCenters.fromJson(jsonResponse);
+      tempCenters2 = DistCenters.fromJson(jsonResponse);
       print(tempCenters2.centers.length);
       tempCenters2.centers.forEach((val) {
         val.sessions.forEach((element) {
@@ -643,7 +686,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      DistCenters tempCenters2 = DistCenters.fromJson(jsonResponse);
+      tempCenters2 = DistCenters.fromJson(jsonResponse);
       print(tempCenters2.centers.length);
       tempCenters2.centers.forEach((val) {
         val.sessions.forEach((element) {
@@ -681,7 +724,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      DistCenters tempCenters3 = DistCenters.fromJson(jsonResponse);
+      tempCenters3 = DistCenters.fromJson(jsonResponse);
       print(tempCenters3.centers.length);
       tempCenters3.centers.forEach((val) {
         val.sessions.forEach((element) {
@@ -719,7 +762,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      DistCenters tempCenters3 = DistCenters.fromJson(jsonResponse);
+      tempCenters3 = DistCenters.fromJson(jsonResponse);
       print(tempCenters3.centers.length);
       tempCenters3.centers.forEach((val) {
         val.sessions.forEach((element) {
@@ -757,7 +800,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      DistCenters tempCenters4 = DistCenters.fromJson(jsonResponse);
+      tempCenters4 = DistCenters.fromJson(jsonResponse);
       print(tempCenters4.centers.length);
       tempCenters4.centers.forEach((val) {
         val.sessions.forEach((element) {
@@ -795,7 +838,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      DistCenters tempCenters4 = DistCenters.fromJson(jsonResponse);
+      tempCenters4 = DistCenters.fromJson(jsonResponse);
       print(tempCenters4.centers.length);
       tempCenters4.centers.forEach((val) {
         val.sessions.forEach((element) {
@@ -815,6 +858,87 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       print('Request failed with status: ${response.statusCode}.');
     }
+  }
+
+  getCenterAvailBilityDR() {
+    availableSlotsd = 0;
+    isSlotAvailabled = false;
+    tempCenters.centers.forEach((val) {
+      val.sessions.forEach((element) {
+        String tempDate = element.date;
+        String formatedTempDate = tempDate.split("-")[2] +
+            "-" +
+            tempDate.split("-")[1] +
+            "-" +
+            tempDate.split("-")[0];
+        DateTime sessionDate = DateTime.parse(formatedTempDate);
+        DateTime DRstartDate = DateTime.parse(autoRunStartDate);
+        DateTime DRendDate = DateTime.parse(autoRunEndDate);
+
+        if (_MinimunAgeForSearch == element.minAgeLimit &&
+            (sessionDate.compareTo(DRstartDate) >= 0) &&
+            (DRendDate.compareTo(sessionDate) >= 0)) {
+          availableSlotsd += element.availableCapacity;
+        }
+      });
+    });
+    tempCenters2.centers.forEach((val) {
+      val.sessions.forEach((element) {
+        String tempDate = element.date;
+        String formatedTempDate = tempDate.split("-")[2] +
+            "-" +
+            tempDate.split("-")[1] +
+            "-" +
+            tempDate.split("-")[0];
+        DateTime sessionDate = DateTime.parse(formatedTempDate);
+        DateTime DRstartDate = DateTime.parse(autoRunStartDate);
+        DateTime DRendDate = DateTime.parse(autoRunEndDate);
+
+        if (_MinimunAgeForSearch == element.minAgeLimit &&
+            (sessionDate.compareTo(DRstartDate) >= 0) &&
+            (DRendDate.compareTo(sessionDate) >= 0)) {
+          availableSlotsd += element.availableCapacity;
+        }
+      });
+    });
+    tempCenters3.centers.forEach((val) {
+      val.sessions.forEach((element) {
+        String tempDate = element.date;
+        String formatedTempDate = tempDate.split("-")[2] +
+            "-" +
+            tempDate.split("-")[1] +
+            "-" +
+            tempDate.split("-")[0];
+        DateTime sessionDate = DateTime.parse(formatedTempDate);
+        DateTime DRstartDate = DateTime.parse(autoRunStartDate);
+        DateTime DRendDate = DateTime.parse(autoRunEndDate);
+
+        if (_MinimunAgeForSearch == element.minAgeLimit &&
+            (sessionDate.compareTo(DRstartDate) >= 0) &&
+            (DRendDate.compareTo(sessionDate) >= 0)) {
+          availableSlotsd += element.availableCapacity;
+        }
+      });
+    });
+    tempCenters4.centers.forEach((val) {
+      val.sessions.forEach((element) {
+        String tempDate = element.date;
+        String formatedTempDate = tempDate.split("-")[2] +
+            "-" +
+            tempDate.split("-")[1] +
+            "-" +
+            tempDate.split("-")[0];
+        DateTime sessionDate = DateTime.parse(formatedTempDate);
+        DateTime DRstartDate = DateTime.parse(autoRunStartDate);
+        DateTime DRendDate = DateTime.parse(autoRunEndDate);
+
+        if (_MinimunAgeForSearch == element.minAgeLimit &&
+            (sessionDate.compareTo(DRstartDate) >= 0) &&
+            (DRendDate.compareTo(sessionDate) >= 0)) {
+          availableSlotsd += element.availableCapacity;
+        }
+      });
+    });
   }
 
   void _launchURL() async => await canLaunch(_url)
@@ -856,6 +980,8 @@ class _MyHomePageState extends State<MyHomePage> {
     tempCookie.getCookie('aRReRunTimeInMin') != ""
         ? aRReRunTimeInMin = tempCookie.getCookie('aRReRunTimeInMin')
         : null;
+    // autoRunStartDate = DateTime.now().toString();
+    // autoRunEndDate = DateTime.now().toString();
     selectedState = defaultState;
     selectedDist = defaultDist;
     selectedPin = deafaultPincode;

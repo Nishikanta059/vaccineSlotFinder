@@ -4,6 +4,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import 'package:vaccine_slot_finder/globalClass.dart';
 import 'dart:ui';
@@ -15,7 +16,7 @@ import 'package:vaccine_slot_finder/main.dart';
 class Settings extends StatefulWidget {
   final Country sCountry;
   final SelcState sState;
-  const Settings({this.sCountry, this.sState});
+  const Settings({@required this.sCountry, @required this.sState});
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -27,7 +28,7 @@ class _SettingsState extends State<Settings> {
   List<String> stateList = [];
   List<String> districtList = [];
   searchBy _radio = EnumToString.fromString(searchBy.values, deafultSearchMode);
-  minAge _character = minAge.age18to45;
+  minAge _character = EnumToString.fromString(minAge.values, deafultAgeGroup);
   SelcState tempState;
   bool isStateLoaded = true;
   bool isDistLoaded = true;
@@ -258,6 +259,105 @@ class _SettingsState extends State<Settings> {
                     height: 25,
                   ),
                   Divider(),
+                  Text("Select date range"),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextButton.icon(
+                              onPressed: () {
+                                _selectDateStart(context);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white10),
+                              ),
+                              icon: Icon(
+                                Icons.calendar_today,
+                                color: Colors.blueGrey[900],
+                              ),
+                              label: Text(
+                                "start date",
+                                style: TextStyle(color: Colors.blueGrey[900]),
+                              )),
+                          Text(DateFormat('dd-MM-yyyy')
+                              .format(DateTime.parse(autoRunStartDate))),
+                        ],
+                      ),
+
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextButton.icon(
+                              onPressed: () {
+                                _selectDateEnd(context);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white10),
+                              ),
+                              icon: Icon(
+                                Icons.calendar_today,
+                                color: Colors.blueGrey[900],
+                              ),
+                              label: Text("end date",
+                                  style:
+                                      TextStyle(color: Colors.blueGrey[900]))),
+                          Text(DateFormat('dd-MM-yyyy')
+                              .format(DateTime.parse(autoRunEndDate))),
+                        ],
+                      ),
+                      // Row(
+                      //   mainAxisSize: MainAxisSize.min,
+                      //   children: [
+                      //     Text('refresh time'),
+                      //     DropdownButton(
+                      //       value: aRReRunTimeInMin,
+                      //       items: <DropdownMenuItem>[
+                      //         DropdownMenuItem(
+                      //           value: '5',
+                      //           child: Text('5 min'),
+                      //         ),
+                      //         DropdownMenuItem(
+                      //           value: '10',
+                      //           child: Text('10 min'),
+                      //         ),
+                      //         DropdownMenuItem(
+                      //           value: '15',
+                      //           child: Text('15 min'),
+                      //         ),
+                      //         DropdownMenuItem(
+                      //           value: '30',
+                      //           child: Text('30 min'),
+                      //         ),
+                      //         DropdownMenuItem(
+                      //           value: '45',
+                      //           child: Text('45 min'),
+                      //         ),
+                      //         DropdownMenuItem(
+                      //           value: '60',
+                      //           child: Text('60 min'),
+                      //         ),
+                      //       ],
+                      //       onChanged: (value) {
+                      //         setState(() {
+                      //           aRReRunTimeInMin = value;
+                      //         });
+                      //       },
+                      //     ),
+                      //   ],
+                      // ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Divider(),
                   Column(
                     children: [
                       Center(child: Text("pincode")),
@@ -293,103 +393,6 @@ class _SettingsState extends State<Settings> {
                             },
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Switch(
-                            value: aRReRunTimeInMin == "yes" ? true : false,
-                            activeColor: Colors.green,
-                            inactiveThumbColor: Colors.blueGrey,
-                            onChanged: (val) {
-                              print("------switch------");
-                              print(val);
-                              if (val == true) {
-                                setState(() {
-                                  aRReRunTimeInMin = "yes";
-                                });
-                              } else {
-                                aRReRunTimeInMin = "no";
-                              }
-                            },
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextButton.icon(
-                                  onPressed: () {
-                                    _selectDateStart(context);
-                                  },
-                                  icon: Icon(Icons.calendar_today),
-                                  label: Text("start date")),
-                              Text(autoRunStartDate),
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextButton.icon(
-                                  onPressed: () {
-                                    _selectDateEnd(context);
-                                  },
-                                  icon: Icon(Icons.calendar_today),
-                                  label: Text("start date")),
-                              Text(autoRunEndDate),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('refresh time'),
-                              DropdownButton(
-                                value: aRReRunTimeInMin,
-                                items: <DropdownMenuItem>[
-                                  DropdownMenuItem(
-                                    value: '5',
-                                    child: Text('5 min'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '10',
-                                    child: Text('10 min'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '15',
-                                    child: Text('15 min'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '30',
-                                    child: Text('30 min'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '45',
-                                    child: Text('45 min'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '60',
-                                    child: Text('60 min'),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    aRReRunTimeInMin = value;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
                       ),
                     ],
                   ),
@@ -435,11 +438,11 @@ class _SettingsState extends State<Settings> {
     print("------ddist-----");
     districtList.clear();
     int tempStateID;
-    widget.sCountry.states.forEach((element) {
-      if (defaultState == element.stateName) {
-        tempStateID = element.stateId;
-      }
-    });
+    // widget.sCountry.states.forEach((element) {
+    //   if (defaultState == element.stateName) {
+    //     tempStateID = element.stateId;
+    //   }
+    // });
 
     var url = Uri.parse(
         'https://cdn-api.co-vin.in/api/v2/admin/location/districts/$tempStateID');
@@ -492,21 +495,33 @@ class _SettingsState extends State<Settings> {
   }
 
   saveToLocal() async {
-    CookieManager tempCookie = CookieManager.getInstance();
-    tempCookie.addToCookie('deafultSearchMode', deafultSearchMode);
-    tempCookie.addToCookie('deafaultPincode', deafaultPincode);
-    tempCookie.addToCookie('defaultState', defaultState);
-    tempCookie.addToCookie('defaultDist', defaultDist);
-    tempCookie.addToCookie('dafaultStateID', dafaultStateID);
-    tempCookie.addToCookie('defaultDistID', defaultDistID);
-    tempCookie.addToCookie('deafultAgeGroup', deafultAgeGroup);
-    tempCookie.addToCookie('autoRunStartDate', autoRunStartDate);
-    tempCookie.addToCookie('autoRunEndDate', autoRunEndDate);
-    tempCookie.addToCookie('aRReRunTimeInMin', aRReRunTimeInMin);
-    tempCookie.addToCookie('isAutoRunActive', isAutoRunActive);
-    setState(() {
-      isSaveStrart = false;
-      Fluttertoast.showToast(msg: "Done!");
-    });
+    if (DateTime.parse(autoRunEndDate)
+            .compareTo(DateTime.parse(autoRunStartDate)) >=
+        0) {
+      CookieManager tempCookie = CookieManager.getInstance();
+      tempCookie.addToCookie('deafultSearchMode', deafultSearchMode);
+      tempCookie.addToCookie('deafaultPincode', deafaultPincode);
+      tempCookie.addToCookie('defaultState', defaultState);
+      tempCookie.addToCookie('defaultDist', defaultDist);
+      tempCookie.addToCookie('dafaultStateID', dafaultStateID);
+      tempCookie.addToCookie('defaultDistID', defaultDistID);
+      tempCookie.addToCookie('deafultAgeGroup', deafultAgeGroup);
+      tempCookie.addToCookie('autoRunStartDate', autoRunStartDate);
+      tempCookie.addToCookie('autoRunEndDate', autoRunEndDate);
+      // tempCookie.addToCookie('aRReRunTimeInMin', aRReRunTimeInMin);
+      // tempCookie.addToCookie('isAutoRunActive', isAutoRunActive);
+      setState(() {
+        isSaveStrart = false;
+        Fluttertoast.showToast(msg: "Done!");
+      });
+    } else {
+      setState(() {
+        isSaveStrart = false;
+        Fluttertoast.showToast(
+          msg: "start date should be less or equal the end date",
+          timeInSecForIosWeb: 3,
+        );
+      });
+    }
   }
 }
