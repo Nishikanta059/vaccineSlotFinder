@@ -11,8 +11,6 @@ import 'dart:ui';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
-import 'package:vaccine_slot_finder/main.dart';
-
 class Settings extends StatefulWidget {
   final Country sCountry;
   final SelcState sState;
@@ -28,7 +26,7 @@ class _SettingsState extends State<Settings> {
   List<String> stateList = [];
   List<String> districtList = [];
   searchBy _radio = EnumToString.fromString(searchBy.values, deafultSearchMode);
-  minAge _character = EnumToString.fromString(minAge.values, deafultAgeGroup);
+  minAge _characters = EnumToString.fromString(minAge.values, deafultAgeGroup);
   SelcState tempState;
   bool isStateLoaded = true;
   bool isDistLoaded = true;
@@ -55,18 +53,6 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
         backgroundColor: Colors.pink[50],
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyHomePage(),
-                ),
-              );
-            },
-          ),
           backgroundColor: Colors.purple[100],
           title: Text('settings'),
         ),
@@ -167,10 +153,10 @@ class _SettingsState extends State<Settings> {
                             children: [
                               new Radio(
                                 value: minAge.age18to45,
-                                groupValue: _character,
+                                groupValue: _characters,
                                 onChanged: (value) {
                                   setState(() {
-                                    _character = value;
+                                    _characters = value;
                                     deafultAgeGroup =
                                         EnumToString.convertToString(value);
                                   });
@@ -190,10 +176,10 @@ class _SettingsState extends State<Settings> {
                             children: [
                               new Radio(
                                 value: minAge.ageAbove45,
-                                groupValue: _character,
+                                groupValue: _characters,
                                 onChanged: (value) {
                                   setState(() {
-                                    _character = value;
+                                    _characters = value;
                                     deafultAgeGroup =
                                         EnumToString.convertToString(value);
                                   });
@@ -512,7 +498,7 @@ class _SettingsState extends State<Settings> {
       // tempCookie.addToCookie('isAutoRunActive', isAutoRunActive);
       setState(() {
         isSaveStrart = false;
-        Fluttertoast.showToast(msg: "Done!");
+        Fluttertoast.showToast(msg: "Done!\nRefesh the page to see changes ");
       });
     } else {
       setState(() {

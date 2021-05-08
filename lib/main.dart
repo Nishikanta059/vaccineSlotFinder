@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String selectedState;
   String selectedDist;
   String selectedPin;
-  int _MinimunAgeForSearch = 18;
+  int _MinimunAgeForSearch;
   DateTime selectedDate = DateTime.now();
   Country india;
   SelcState tempState;
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     initializeGlobalVariable();
-    // getStates();
+    getStates();
 
     super.initState();
   }
@@ -294,7 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 30,
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {
+                    onPressed: () async {
                       if (deafultSearchMode != "pincode") {
                         int tempDistID;
 
@@ -303,16 +303,20 @@ class _MyHomePageState extends State<MyHomePage> {
                             tempDistID = element.districtId;
                           }
                         });
-                        getCenterAvailBilityNsd(tempDistID);
-                        getCenterAvailBilityNsd2(tempDistID);
-                        getCenterAvailBilityNsd3(tempDistID);
-                        getCenterAvailBilityNsd4(tempDistID);
+                        await getCenterAvailBilityNsd(tempDistID);
+                        await getCenterAvailBilityNsd2(tempDistID);
+                        await getCenterAvailBilityNsd3(tempDistID);
+                        await getCenterAvailBilityNsd4(tempDistID);
                         getCenterAvailBilityDR();
                       } else {
-                        getCenterAvailBilityNsdpin(int.parse(selectedPin));
-                        getCenterAvailBilityNsdpin2(int.parse(selectedPin));
-                        getCenterAvailBilityNsdpin3(int.parse(selectedPin));
-                        getCenterAvailBilityNsdpin4(int.parse(selectedPin));
+                        await getCenterAvailBilityNsdpin(
+                            int.parse(selectedPin));
+                        await getCenterAvailBilityNsdpin2(
+                            int.parse(selectedPin));
+                        await getCenterAvailBilityNsdpin3(
+                            int.parse(selectedPin));
+                        await getCenterAvailBilityNsdpin4(
+                            int.parse(selectedPin));
                         getCenterAvailBilityDR();
                       }
 
@@ -708,8 +712,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  getCenterAvailBilityNsd3(int pin) async {
-    final DateTime now = DateTime.now().add(const Duration(days: 14));
+  getCenterAvailBilityNsd3(int distID) async {
+    final DateTime now = DateTime.now().add(const Duration(days: 7));
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     final String formatted = formatter.format(now);
     availableSlots3 = 0;
@@ -717,7 +721,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(formatted);
 
     var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
+        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
 
     var response = await http.get(url);
     if (response.statusCode == 200) {
@@ -939,6 +943,10 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       });
     });
+    setState(() {
+      if (availableSlotsd != 0) isSlotAvailabled = true;
+      isSearchStart = false;
+    });
   }
 
   void _launchURL() async => await canLaunch(_url)
@@ -974,17 +982,18 @@ class _MyHomePageState extends State<MyHomePage> {
     tempCookie.getCookie('autoRunEndDate') != ""
         ? autoRunEndDate = tempCookie.getCookie('autoRunEndDate')
         : autoRunEndDate = DateTime.now().toString();
-    tempCookie.getCookie('isAutoRunActive') != ""
-        ? isAutoRunActive = tempCookie.getCookie('isAutoRunActive')
-        : null;
-    tempCookie.getCookie('aRReRunTimeInMin') != ""
-        ? aRReRunTimeInMin = tempCookie.getCookie('aRReRunTimeInMin')
-        : null;
+    // tempCookie.getCookie('isAutoRunActive') != ""
+    //     ? isAutoRunActive = tempCookie.getCookie('isAutoRunActive')
+    //     : null;
+    // tempCookie.getCookie('aRReRunTimeInMin') != ""
+    //     ? aRReRunTimeInMin = tempCookie.getCookie('aRReRunTimeInMin')
+    //     : null;
     // autoRunStartDate = DateTime.now().toString();
     // autoRunEndDate = DateTime.now().toString();
     selectedState = defaultState;
     selectedDist = defaultDist;
     selectedPin = deafaultPincode;
+    _MinimunAgeForSearch = (deafultAgeGroup == "ageAbove45" ? 45 : 18);
     _character = EnumToString.fromString(minAge.values, deafultAgeGroup);
   }
 }
