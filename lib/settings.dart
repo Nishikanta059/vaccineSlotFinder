@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:html' as html;
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -498,8 +498,9 @@ class _SettingsState extends State<Settings> {
       // tempCookie.addToCookie('isAutoRunActive', isAutoRunActive);
       setState(() {
         isSaveStrart = false;
-        Fluttertoast.showToast(msg: "Done!\nRefesh the page to see changes ");
+        Fluttertoast.showToast(msg: "Done!");
       });
+      html.window.location.reload();
     } else {
       setState(() {
         isSaveStrart = false;

@@ -14,7 +14,7 @@ String defaultDistID = '512';
 String autoRunStartDate;
 String autoRunEndDate;
 String autoRunDays;
-String isAutoRunActive = 'no';
+String isNoticeActive = 'true';
 String aRReRunTimeInMin = '10';
 
 class Country {
