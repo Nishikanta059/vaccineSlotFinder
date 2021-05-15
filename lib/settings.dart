@@ -82,7 +82,7 @@ class _SettingsState extends State<Settings> {
                         });
                       },
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                         child: Text(
                           "save changes",
                           style: TextStyle(
@@ -106,7 +106,7 @@ class _SettingsState extends State<Settings> {
               ],
             )),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 25, 15, 0),
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
               child: Column(
                 children: [
                   BackdropFilter(
