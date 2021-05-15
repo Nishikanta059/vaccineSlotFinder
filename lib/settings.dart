@@ -55,6 +55,44 @@ class _SettingsState extends State<Settings> {
         appBar: AppBar(
           backgroundColor: Colors.purple[100],
           title: Text('settings'),
+          actions: [
+            isSaveStrart
+                ? CircularProgressIndicator()
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white54),
+                      ),
+                      onPressed: () {
+                        tempState.districts.forEach((element) {
+                          if (defaultDist == element.districtName) {
+                            defaultDistID = element.districtId.toString();
+                          }
+                        });
+                        widget.sCountry.states.forEach((state) {
+                          if (defaultState == state.stateName) {
+                            defaultDistID = state.stateId.toString();
+                          }
+                        });
+                        setState(() {
+                          isSaveStrart = true;
+                          saveToLocal();
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "save changes",
+                          style: TextStyle(
+                            color: Colors.blueGrey[900],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -385,34 +423,6 @@ class _SettingsState extends State<Settings> {
                   SizedBox(
                     height: 30,
                   ),
-                  isSaveStrart
-                      ? CircularProgressIndicator()
-                      : ElevatedButton(
-                          onPressed: () {
-                            tempState.districts.forEach((element) {
-                              if (defaultDist == element.districtName) {
-                                defaultDistID = element.districtId.toString();
-                              }
-                            });
-                            widget.sCountry.states.forEach((state) {
-                              if (defaultState == state.stateName) {
-                                defaultDistID = state.stateId.toString();
-                              }
-                            });
-                            setState(() {
-                              isSaveStrart = true;
-                              saveToLocal();
-                            });
-                          },
-                          child: Text(
-                            "save changes",
-                            style: TextStyle(color: Colors.white54),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.blueGrey[900]),
-                          ),
-                        ),
                 ],
               ),
             ),

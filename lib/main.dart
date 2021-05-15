@@ -501,7 +501,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: AlertDialog(
                           title: Text("NOTICE"),
                           content: Text(
-                              "As per the new rules of Ministry of Health and Family Welfare The appointment availability data is cached and may be upto 30 minutes old , prefer official website for consistent realtime availability"),
+                              "As per the new rules of Ministry of Health and Family Welfare , the appointment availability data is cached and may be upto 30 minutes old .\n \n \nUse the 'install app' or 'add to home screen' options available in the more section of your browser to use this site as an app."),
                           actions: [
                             TextButton(
                                 onPressed: () {
