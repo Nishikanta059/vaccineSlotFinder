@@ -434,11 +434,11 @@ class _SettingsState extends State<Settings> {
     print("------ddist-----");
     districtList.clear();
     int tempStateID;
-    // widget.sCountry.states.forEach((element) {
-    //   if (defaultState == element.stateName) {
-    //     tempStateID = element.stateId;
-    //   }
-    // });
+    widget.sCountry.states.forEach((element) {
+      if (defaultState == element.stateName) {
+        tempStateID = element.stateId;
+      }
+    });
 
     var url = Uri.parse(
         'https://cdn-api.co-vin.in/api/v2/admin/location/districts/$tempStateID');
