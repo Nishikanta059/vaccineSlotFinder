@@ -185,519 +185,521 @@ class _MyHomePageState extends State<MyHomePage> {
         )),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
-              child: isNoticeActive != "true"
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        (deafultSearchMode == "pincode")
-                            ? Center(
-                                child: Container(
-                                  width: width / 2.5,
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      labelText: "pincode",
-                                      labelStyle:
-                                          TextStyle(color: Colors.white),
-                                      fillColor: Colors.white,
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.blueGrey[900],
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+                child: isNoticeActive != "true"
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          (deafultSearchMode == "pincode")
+                              ? Center(
+                                  child: Container(
+                                    width: width / 2.5,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        labelText: "pincode",
+                                        labelStyle:
+                                            TextStyle(color: Colors.white),
+                                        fillColor: Colors.white,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blueGrey[900],
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blueGrey[400],
+                                            width: 2.0,
+                                          ),
                                         ),
                                       ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          color: Colors.blueGrey[400],
-                                          width: 2.0,
-                                        ),
-                                      ),
+                                      keyboardType: TextInputType.number,
+                                      initialValue: deafaultPincode,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          selectedPin = val;
+                                        });
+                                      },
                                     ),
-                                    keyboardType: TextInputType.number,
-                                    initialValue: deafaultPincode,
-                                    onChanged: (val) {
+                                  ),
+                                )
+                              : Column(
+                                  children: [
+                                    isStateLoaded
+                                        ? DropdownSearch<String>(
+                                            mode: Mode.MENU,
+                                            showSelectedItem: true,
+                                            showSearchBox: true,
+                                            items: stateList,
+                                            label: "Select State",
+                                            hint: "country in menu mode",
+                                            popupItemDisabled: (String s) =>
+                                                s.startsWith('I'),
+                                            onChanged: (val) {
+                                              setState(() {
+                                                selectedState = val;
+                                                isDistLoaded = false;
+                                                getDist();
+                                              });
+                                            },
+                                            selectedItem: selectedState)
+                                        : CircularProgressIndicator(),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    isStateLoaded
+                                        ? (isDistLoaded
+                                            ? DropdownSearch<String>(
+                                                mode: Mode.MENU,
+                                                showSelectedItem: true,
+                                                items: districtList,
+                                                label: "select dist",
+                                                hint: "select dist",
+                                                popupItemDisabled: (String s) =>
+                                                    s.startsWith('I'),
+                                                onChanged: (val) {
+                                                  setState(() {
+                                                    selectedDist = val;
+                                                  });
+                                                },
+                                                selectedItem: selectedDist,
+                                              )
+                                            : CircularProgressIndicator())
+                                        : SizedBox(
+                                            height: 5,
+                                          ),
+                                  ],
+                                ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  new Radio(
+                                    value: minAge.age18to45,
+                                    groupValue: _character,
+                                    onChanged: (value) {
                                       setState(() {
-                                        selectedPin = val;
+                                        _character = value;
+                                        _MinimunAgeForSearch = 18;
                                       });
                                     },
                                   ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  isStateLoaded
-                                      ? DropdownSearch<String>(
-                                          mode: Mode.MENU,
-                                          showSelectedItem: true,
-                                          showSearchBox: true,
-                                          items: stateList,
-                                          label: "Select State",
-                                          hint: "country in menu mode",
-                                          popupItemDisabled: (String s) =>
-                                              s.startsWith('I'),
-                                          onChanged: (val) {
-                                            setState(() {
-                                              selectedState = val;
-                                              isDistLoaded = false;
-                                              getDist();
-                                            });
-                                          },
-                                          selectedItem: selectedState)
-                                      : CircularProgressIndicator(),
-                                  SizedBox(
-                                    height: 25,
+                                  Flexible(
+                                    child: new Text(
+                                      'age18to45',
+                                      style: new TextStyle(fontSize: 16.0),
+                                    ),
                                   ),
-                                  isStateLoaded
-                                      ? (isDistLoaded
-                                          ? DropdownSearch<String>(
-                                              mode: Mode.MENU,
-                                              showSelectedItem: true,
-                                              items: districtList,
-                                              label: "select dist",
-                                              hint: "select dist",
-                                              popupItemDisabled: (String s) =>
-                                                  s.startsWith('I'),
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  selectedDist = val;
-                                                });
-                                              },
-                                              selectedItem: selectedDist,
-                                            )
-                                          : CircularProgressIndicator())
-                                      : SizedBox(
-                                          height: 5,
-                                        ),
                                 ],
                               ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                new Radio(
-                                  value: minAge.age18to45,
-                                  groupValue: _character,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _character = value;
-                                      _MinimunAgeForSearch = 18;
-                                    });
-                                  },
-                                ),
-                                Flexible(
-                                  child: new Text(
-                                    'age18to45',
-                                    style: new TextStyle(fontSize: 16.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  new Radio(
+                                    value: minAge.ageAbove45,
+                                    groupValue: _character,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _character = value;
+                                        _MinimunAgeForSearch = 45;
+                                      });
+                                    },
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                new Radio(
-                                  value: minAge.ageAbove45,
-                                  groupValue: _character,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _character = value;
-                                      _MinimunAgeForSearch = 45;
-                                    });
-                                  },
-                                ),
-                                Flexible(
-                                  child: new Text(
-                                    'ageAbove45',
-                                    style: new TextStyle(
-                                      fontSize: 16.0,
+                                  Flexible(
+                                    child: new Text(
+                                      'ageAbove45',
+                                      style: new TextStyle(
+                                        fontSize: 16.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                new Radio(
-                                  value: dose.dose1,
-                                  groupValue: _dose,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _dose = value;
-                                      _DoseForSearch = "dose1";
-                                    });
-                                  },
-                                ),
-                                Flexible(
-                                  child: new Text(
-                                    'Dose 1',
-                                    style: new TextStyle(fontSize: 16.0),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  new Radio(
+                                    value: dose.dose1,
+                                    groupValue: _dose,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _dose = value;
+                                        _DoseForSearch = "dose1";
+                                      });
+                                    },
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                new Radio(
-                                  value: dose.dose2,
-                                  groupValue: _dose,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _dose = value;
-                                      _DoseForSearch = "dose2";
-                                    });
-                                  },
-                                ),
-                                Flexible(
-                                  child: new Text(
-                                    'Dose 2',
-                                    style: new TextStyle(
-                                      fontSize: 16.0,
+                                  Flexible(
+                                    child: new Text(
+                                      'Dose 1',
+                                      style: new TextStyle(fontSize: 16.0),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  new Radio(
+                                    value: dose.dose2,
+                                    groupValue: _dose,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _dose = value;
+                                        _DoseForSearch = "dose2";
+                                      });
+                                    },
+                                  ),
+                                  Flexible(
+                                    child: new Text(
+                                      'Dose 2',
+                                      style: new TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 25,
+                          ),
+                          ElevatedButton.icon(
+                            onPressed: () async {
+                              if (deafultSearchMode != "pincode") {
+                                int tempDistID;
+
+                                tempState.districts.forEach((element) {
+                                  if (selectedDist == element.districtName) {
+                                    tempDistID = element.districtId;
+                                  }
+                                });
+                                await getCenterAvailBilityNsdF(tempDistID);
+                                // await getCenterAvailBilityNsd2(tempDistID);
+                                // await getCenterAvailBilityNsd3(tempDistID);
+                                // await getCenterAvailBilityNsd4(tempDistID);
+                                getCenterAvailBilityDR();
+                              } else {
+                                await getCenterAvailBilityNsdpinF(
+                                    int.parse(selectedPin));
+                                // await getCenterAvailBilityNsdpin2(
+                                //     int.parse(selectedPin));
+                                // await getCenterAvailBilityNsdpin3(
+                                //     int.parse(selectedPin));
+                                // await getCenterAvailBilityNsdpin4(
+                                //     int.parse(selectedPin));
+                                getCenterAvailBilityDR();
+                              }
+
+                              Fluttertoast.showToast(msg: "searching..");
+                            },
+                            icon: Icon(
+                              Icons.search,
+                              color: Colors.white54,
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        ElevatedButton.icon(
-                          onPressed: () async {
-                            if (deafultSearchMode != "pincode") {
-                              int tempDistID;
-
-                              tempState.districts.forEach((element) {
-                                if (selectedDist == element.districtName) {
-                                  tempDistID = element.districtId;
-                                }
-                              });
-                              await getCenterAvailBilityNsdF(tempDistID);
-                              // await getCenterAvailBilityNsd2(tempDistID);
-                              // await getCenterAvailBilityNsd3(tempDistID);
-                              // await getCenterAvailBilityNsd4(tempDistID);
-                              getCenterAvailBilityDR();
-                            } else {
-                              await getCenterAvailBilityNsdpinF(
-                                  int.parse(selectedPin));
-                              // await getCenterAvailBilityNsdpin2(
-                              //     int.parse(selectedPin));
-                              // await getCenterAvailBilityNsdpin3(
-                              //     int.parse(selectedPin));
-                              // await getCenterAvailBilityNsdpin4(
-                              //     int.parse(selectedPin));
-                              getCenterAvailBilityDR();
-                            }
-
-                            Fluttertoast.showToast(msg: "searching..");
-                          },
-                          icon: Icon(
-                            Icons.search,
-                            color: Colors.white54,
+                            label: Text(
+                              "start search",
+                              style: TextStyle(color: Colors.white54),
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.blueGrey[900]),
+                            ),
                           ),
-                          label: Text(
-                            "start search",
-                            style: TextStyle(color: Colors.white54),
+                          SizedBox(
+                            height: 18,
                           ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.blueGrey[900]),
+                          // isSearchStart
+                          //     ? CircularProgressIndicator()
+                          //     :
+                          (!isSlotAvailabled
+                              ? Column(
+                                  children: [
+                                    Divider(),
+                                    Text("from  " +
+                                        DateFormat('dd-MM-yyyy').format(
+                                            DateTime.parse(autoRunStartDate)) +
+                                        " to " +
+                                        DateFormat('dd-MM-yyyy').format(
+                                            DateTime.parse(autoRunEndDate))),
+                                    Divider(),
+                                    Text(
+                                        'total slots available = $availableSlotsd')
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Divider(),
+                                    Text("from  " +
+                                        DateFormat('dd-MM-yyyy').format(
+                                            DateTime.parse(autoRunStartDate)) +
+                                        " to " +
+                                        DateFormat('dd-MM-yyyy').format(
+                                            DateTime.parse(autoRunEndDate))),
+                                    Divider(),
+                                    Wrap(
+                                      spacing: 10,
+                                      children: [
+                                        Text(
+                                            'Dose 1 slots = ' +
+                                                availableSlotsdd1.toString(),
+                                            style: TextStyle(
+                                                color: Colors.lightGreen)),
+                                        Text(
+                                            'Dose 2 slots = ' +
+                                                availableSlotsdd2.toString(),
+                                            style: TextStyle(
+                                                color: Colors.greenAccent)),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    _DoseForSearch == "dose1" &&
+                                                availableSlotsdd1 != 0 ||
+                                            _DoseForSearch == "dose2" &&
+                                                availableSlotsdd2 != 0
+                                        ? TextButton(
+                                            onPressed: _launchURL,
+                                            child: Text('Book Now'),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                )),
+                          SizedBox(
+                            height: 18,
                           ),
-                        ),
-                        SizedBox(
-                          height: 18,
-                        ),
-                        // isSearchStart
-                        //     ? CircularProgressIndicator()
-                        //     :
-                        (!isSlotAvailabled
-                            ? Column(
-                                children: [
-                                  Divider(),
-                                  Text("from  " +
-                                      DateFormat('dd-MM-yyyy').format(
-                                          DateTime.parse(autoRunStartDate)) +
-                                      " to " +
-                                      DateFormat('dd-MM-yyyy').format(
-                                          DateTime.parse(autoRunEndDate))),
-                                  Divider(),
-                                  Text(
-                                      'total slots available = $availableSlotsd')
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  Divider(),
-                                  Text("from  " +
-                                      DateFormat('dd-MM-yyyy').format(
-                                          DateTime.parse(autoRunStartDate)) +
-                                      " to " +
-                                      DateFormat('dd-MM-yyyy').format(
-                                          DateTime.parse(autoRunEndDate))),
-                                  Divider(),
-                                  Wrap(
-                                    spacing: 10,
-                                    children: [
-                                      Text(
-                                          'Dose 1 slots = ' +
-                                              availableSlotsdd1.toString(),
-                                          style: TextStyle(
-                                              color: Colors.lightGreen)),
-                                      Text(
-                                          'Dose 2 slots = ' +
-                                              availableSlotsdd2.toString(),
-                                          style: TextStyle(
-                                              color: Colors.greenAccent)),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  _DoseForSearch == "dose1" &&
-                                              availableSlotsdd1 != 0 ||
-                                          _DoseForSearch == "dose2" &&
-                                              availableSlotsdd2 != 0
-                                      ? TextButton(
-                                          onPressed: _launchURL,
-                                          child: Text('Book Now'),
-                                        )
-                                      : SizedBox.shrink(),
-                                ],
-                              )),
-                        SizedBox(
-                          height: 18,
-                        ),
-                        // isSearchStart
-                        //     ? CircularProgressIndicator()
-                        //     :
-                        (!isSlotAvailable[0]
-                            ? Column(
-                                children: [
-                                  Divider(),
-                                  Text('for next 7days form today'),
-                                  Divider(),
-                                  Text('total slots available = ' +
-                                      availableSlots[0].toString())
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  Divider(),
-                                  Text('for next 7days form today'),
-                                  Divider(),
-                                  Wrap(
-                                    spacing: 10,
-                                    children: [
-                                      Text(
-                                          'Dose 1 slots = ' +
-                                              availableSlotsd1[0].toString(),
-                                          style: TextStyle(
-                                              color: Colors.lightGreen)),
-                                      Text(
-                                          'Dose 2 slots = ' +
-                                              availableSlotsd2[0].toString(),
-                                          style: TextStyle(
-                                              color: Colors.greenAccent)),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  _DoseForSearch == "dose1" &&
-                                              availableSlotsd1[0] != 0 ||
-                                          _DoseForSearch == "dose2" &&
-                                              availableSlotsd2[0] != 0
-                                      ? TextButton(
-                                          onPressed: _launchURL,
-                                          child: Text('Book Now'),
-                                        )
-                                      : SizedBox.shrink(),
-                                ],
-                              )),
-                        // isSearchStart
-                        //     ? CircularProgressIndicator()
-                        //     :
-                        (!isSlotAvailable[1]
-                            ? Column(
-                                children: [
-                                  Divider(),
-                                  Text('for next 7-14 days form today'),
-                                  Divider(),
-                                  Text(
-                                      'total slots available = $availableSlots2')
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  Divider(),
-                                  Text('for next 7-14 days form today'),
-                                  Divider(),
-                                  Wrap(
-                                    spacing: 10,
-                                    children: [
-                                      Text(
-                                          'Dose 1 slots = ' +
-                                              availableSlotsd1[1].toString(),
-                                          style: TextStyle(
-                                              color: Colors.lightGreen)),
-                                      Text(
-                                          'Dose 2 slots = ' +
-                                              availableSlotsd2[1].toString(),
-                                          style: TextStyle(
-                                              color: Colors.greenAccent)),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  _DoseForSearch == "dose1" &&
-                                              availableSlotsd1[1] != 0 ||
-                                          _DoseForSearch == "dose2" &&
-                                              availableSlotsd2[1] != 0
-                                      ? TextButton(
-                                          onPressed: _launchURL,
-                                          child: Text('Book Now'),
-                                        )
-                                      : SizedBox.shrink(),
-                                ],
-                              )),
-                        // isSearchStart
-                        //     ? CircularProgressIndicator()
-                        //     :
-                        (!isSlotAvailable[2]
-                            ? Column(
-                                children: [
-                                  Divider(),
-                                  Text('for next 14-21 days form today'),
-                                  Divider(),
-                                  Text(
-                                      'total slots available = $availableSlots3')
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  Divider(),
-                                  Text('for next 14-21 days form today'),
-                                  Divider(),
-                                  Wrap(
-                                    spacing: 10,
-                                    children: [
-                                      Text(
-                                          'Dose 1 slots = ' +
-                                              availableSlotsd1[2].toString(),
-                                          style: TextStyle(
-                                              color: Colors.lightGreen)),
-                                      Text(
-                                          'Dose 2 slots = ' +
-                                              availableSlotsd2[2].toString(),
-                                          style: TextStyle(
-                                              color: Colors.greenAccent)),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  _DoseForSearch == "dose1" &&
-                                              availableSlotsd1[2] != 0 ||
-                                          _DoseForSearch == "dose2" &&
-                                              availableSlotsd2[2] != 0
-                                      ? TextButton(
-                                          onPressed: _launchURL,
-                                          child: Text('Book Now'),
-                                        )
-                                      : SizedBox.shrink(),
-                                ],
-                              )),
-                        // isSearchStart
-                        //     ? CircularProgressIndicator()
-                        //     :
-                        (!isSlotAvailable[3]
-                            ? Column(
-                                children: [
-                                  Divider(),
-                                  Text('for next 21-28 days form today'),
-                                  Divider(),
-                                  Text(
-                                      'total slots available = $availableSlots4')
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  Divider(),
-                                  Text('for next 21-28 days form today'),
-                                  Divider(),
-                                  Wrap(
-                                    spacing: 10,
-                                    children: [
-                                      Text(
-                                          'Dose 1 slots = ' +
-                                              availableSlotsd1[3].toString(),
-                                          style: TextStyle(
-                                              color: Colors.lightGreen)),
-                                      Text(
-                                          'Dose 2 slots = ' +
-                                              availableSlotsd2[3].toString(),
-                                          style: TextStyle(
-                                              color: Colors.greenAccent)),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  _DoseForSearch == "dose1" &&
-                                              availableSlotsd1[3] != 0 ||
-                                          _DoseForSearch == "dose2" &&
-                                              availableSlotsd2[3] != 0
-                                      ? TextButton(
-                                          onPressed: _launchURL,
-                                          child: Text('Book Now'),
-                                        )
-                                      : SizedBox.shrink(),
-                                ],
-                              )),
-                      ],
-                    )
-                  : Center(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                        child: AlertDialog(
-                          title: Text("NOTICE"),
-                          content: Text(
-                              "As per the new rules of Ministry of Health and Family Welfare , the appointment availability data is cached and may be upto 30 minutes old .\n \n \nUse the 'install app' or 'add to home screen' options available in the more section of your browser to use this site as an app."),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  dismisNotice();
-                                },
-                                child: Text("ok"))
-                          ],
+                          // isSearchStart
+                          //     ? CircularProgressIndicator()
+                          //     :
+                          (!isSlotAvailable[0]
+                              ? Column(
+                                  children: [
+                                    Divider(),
+                                    Text('for next 7days form today'),
+                                    Divider(),
+                                    Text('total slots available = ' +
+                                        availableSlots[0].toString())
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Divider(),
+                                    Text('for next 7days form today'),
+                                    Divider(),
+                                    Wrap(
+                                      spacing: 10,
+                                      children: [
+                                        Text(
+                                            'Dose 1 slots = ' +
+                                                availableSlotsd1[0].toString(),
+                                            style: TextStyle(
+                                                color: Colors.lightGreen)),
+                                        Text(
+                                            'Dose 2 slots = ' +
+                                                availableSlotsd2[0].toString(),
+                                            style: TextStyle(
+                                                color: Colors.greenAccent)),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    _DoseForSearch == "dose1" &&
+                                                availableSlotsd1[0] != 0 ||
+                                            _DoseForSearch == "dose2" &&
+                                                availableSlotsd2[0] != 0
+                                        ? TextButton(
+                                            onPressed: _launchURL,
+                                            child: Text('Book Now'),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                )),
+                          // isSearchStart
+                          //     ? CircularProgressIndicator()
+                          //     :
+                          (!isSlotAvailable[1]
+                              ? Column(
+                                  children: [
+                                    Divider(),
+                                    Text('for next 7-14 days form today'),
+                                    Divider(),
+                                    Text(
+                                        'total slots available = $availableSlots2')
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Divider(),
+                                    Text('for next 7-14 days form today'),
+                                    Divider(),
+                                    Wrap(
+                                      spacing: 10,
+                                      children: [
+                                        Text(
+                                            'Dose 1 slots = ' +
+                                                availableSlotsd1[1].toString(),
+                                            style: TextStyle(
+                                                color: Colors.lightGreen)),
+                                        Text(
+                                            'Dose 2 slots = ' +
+                                                availableSlotsd2[1].toString(),
+                                            style: TextStyle(
+                                                color: Colors.greenAccent)),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    _DoseForSearch == "dose1" &&
+                                                availableSlotsd1[1] != 0 ||
+                                            _DoseForSearch == "dose2" &&
+                                                availableSlotsd2[1] != 0
+                                        ? TextButton(
+                                            onPressed: _launchURL,
+                                            child: Text('Book Now'),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                )),
+                          // isSearchStart
+                          //     ? CircularProgressIndicator()
+                          //     :
+                          (!isSlotAvailable[2]
+                              ? Column(
+                                  children: [
+                                    Divider(),
+                                    Text('for next 14-21 days form today'),
+                                    Divider(),
+                                    Text(
+                                        'total slots available = $availableSlots3')
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Divider(),
+                                    Text('for next 14-21 days form today'),
+                                    Divider(),
+                                    Wrap(
+                                      spacing: 10,
+                                      children: [
+                                        Text(
+                                            'Dose 1 slots = ' +
+                                                availableSlotsd1[2].toString(),
+                                            style: TextStyle(
+                                                color: Colors.lightGreen)),
+                                        Text(
+                                            'Dose 2 slots = ' +
+                                                availableSlotsd2[2].toString(),
+                                            style: TextStyle(
+                                                color: Colors.greenAccent)),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    _DoseForSearch == "dose1" &&
+                                                availableSlotsd1[2] != 0 ||
+                                            _DoseForSearch == "dose2" &&
+                                                availableSlotsd2[2] != 0
+                                        ? TextButton(
+                                            onPressed: _launchURL,
+                                            child: Text('Book Now'),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                )),
+                          // isSearchStart
+                          //     ? CircularProgressIndicator()
+                          //     :
+                          (!isSlotAvailable[3]
+                              ? Column(
+                                  children: [
+                                    Divider(),
+                                    Text('for next 21-28 days form today'),
+                                    Divider(),
+                                    Text(
+                                        'total slots available = $availableSlots4')
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Divider(),
+                                    Text('for next 21-28 days form today'),
+                                    Divider(),
+                                    Wrap(
+                                      spacing: 10,
+                                      children: [
+                                        Text(
+                                            'Dose 1 slots = ' +
+                                                availableSlotsd1[3].toString(),
+                                            style: TextStyle(
+                                                color: Colors.lightGreen)),
+                                        Text(
+                                            'Dose 2 slots = ' +
+                                                availableSlotsd2[3].toString(),
+                                            style: TextStyle(
+                                                color: Colors.greenAccent)),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    _DoseForSearch == "dose1" &&
+                                                availableSlotsd1[3] != 0 ||
+                                            _DoseForSearch == "dose2" &&
+                                                availableSlotsd2[3] != 0
+                                        ? TextButton(
+                                            onPressed: _launchURL,
+                                            child: Text('Book Now'),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                )),
+                        ],
+                      )
+                    : Center(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                          child: AlertDialog(
+                            title: Text("NOTICE"),
+                            content: Text(
+                                "As per the new rules of Ministry of Health and Family Welfare , the appointment availability data is cached and may be upto 30 minutes old .\n \n \nUse the 'install app' or 'add to home screen' options available in the more section of your browser to use this site as an app."),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    dismisNotice();
+                                  },
+                                  child: Text("ok"))
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+              ),
             ),
           ),
         ),
