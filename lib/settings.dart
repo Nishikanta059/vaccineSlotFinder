@@ -27,6 +27,7 @@ class _SettingsState extends State<Settings> {
   List<String> districtList = [];
   searchBy _radio = EnumToString.fromString(searchBy.values, deafultSearchMode);
   minAge _characters = EnumToString.fromString(minAge.values, deafultAgeGroup);
+  dose _dose = EnumToString.fromString(dose.values, deafultDose);
   SelcState tempState;
   bool isStateLoaded = true;
   bool isDistLoaded = true;
@@ -94,336 +95,364 @@ class _SettingsState extends State<Settings> {
                   ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.deepPurpleAccent[400],
-                Colors.pink[200],
-              ],
-            )),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-              child: Column(
-                children: [
-                  BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
-                        child: Column(
-                          children: [
-                            Center(child: Text("Search mode")),
-                            Divider(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    new Radio(
-                                      value: searchBy.pincode,
-                                      groupValue: _radio,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _radio = value;
-                                          deafultSearchMode = 'pincode';
-                                        });
-                                      },
-                                    ),
-                                    Flexible(
-                                      child: new Text(
-                                        'pincode',
-                                        style: new TextStyle(fontSize: 16.0),
+        body: RawScrollbar(
+          isAlwaysShown: true,
+          thumbColor: Colors.blueGrey[800],
+          radius: Radius.circular(20),
+          thickness: 8,
+          child: SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Colors.deepPurpleAccent[400],
+                  Colors.pink[200],
+                ],
+              )),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                child: Column(
+                  children: [
+                    BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+                          child: Column(
+                            children: [
+                              Center(child: Text("Search mode")),
+                              Divider(),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      new Radio(
+                                        value: searchBy.pincode,
+                                        groupValue: _radio,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _radio = value;
+                                            deafultSearchMode = 'pincode';
+                                          });
+                                        },
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    new Radio(
-                                      value: searchBy.district,
-                                      groupValue: _radio,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _radio = value;
-                                          deafultSearchMode = 'district';
-                                        });
-                                      },
-                                    ),
-                                    Flexible(
-                                      child: new Text(
-                                        'district',
-                                        style: new TextStyle(
-                                          fontSize: 16.0,
+                                      Flexible(
+                                        child: new Text(
+                                          'pincode',
+                                          style: new TextStyle(fontSize: 16.0),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      new Radio(
+                                        value: searchBy.district,
+                                        groupValue: _radio,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _radio = value;
+                                            deafultSearchMode = 'district';
+                                          });
+                                        },
+                                      ),
+                                      Flexible(
+                                        child: new Text(
+                                          'district',
+                                          style: new TextStyle(
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Column(
+                      children: [
+                        Center(child: Text("Age group")),
+                        Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                new Radio(
+                                  value: minAge.age18to45,
+                                  groupValue: _characters,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _characters = value;
+                                      deafultAgeGroup =
+                                          EnumToString.convertToString(value);
+                                    });
+                                  },
+                                ),
+                                Flexible(
+                                  child: new Text(
+                                    'age18to45',
+                                    style: new TextStyle(fontSize: 16.0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                new Radio(
+                                  value: minAge.ageAbove45,
+                                  groupValue: _characters,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _characters = value;
+                                      deafultAgeGroup =
+                                          EnumToString.convertToString(value);
+                                    });
+                                  },
+                                ),
+                                Flexible(
+                                  child: new Text(
+                                    'ageAbove45',
+                                    style: new TextStyle(
+                                      fontSize: 16.0,
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Column(
-                    children: [
-                      Center(child: Text("Age group")),
-                      Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              new Radio(
-                                value: minAge.age18to45,
-                                groupValue: _characters,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _characters = value;
-                                    deafultAgeGroup =
-                                        EnumToString.convertToString(value);
-                                  });
-                                },
-                              ),
-                              Flexible(
-                                child: new Text(
-                                  'age18to45',
-                                  style: new TextStyle(fontSize: 16.0),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Column(
+                      children: [
+                        Center(child: Text("Vaccine Dose")),
+                        Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                new Radio(
+                                  value: dose.dose1,
+                                  groupValue: _dose,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dose = value;
+                                      deafultDose =
+                                          EnumToString.convertToString(value);
+                                    });
+                                  },
                                 ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              new Radio(
-                                value: minAge.ageAbove45,
-                                groupValue: _characters,
-                                onChanged: (value) {
+                                Flexible(
+                                  child: new Text(
+                                    'Dose 1',
+                                    style: new TextStyle(fontSize: 16.0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                new Radio(
+                                  value: dose.dose2,
+                                  groupValue: _dose,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dose = value;
+                                      deafultDose =
+                                          EnumToString.convertToString(value);
+                                    });
+                                  },
+                                ),
+                                Flexible(
+                                  child: new Text(
+                                    'Dose 2',
+                                    style: new TextStyle(
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    DropdownSearch<String>(
+                        mode: Mode.MENU,
+                        showSelectedItem: true,
+                        items: stateList,
+                        label: "Select State",
+                        hint: "country in menu mode",
+                        popupItemDisabled: (String s) => s.startsWith('I'),
+                        onChanged: (value) {
+                          setState(() {
+                            defaultState = value;
+                            isDistLoaded = false;
+                            getDist();
+                          });
+                        },
+                        selectedItem: defaultState),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    isStateLoaded
+                        ? (isDistLoaded
+                            ? DropdownSearch<String>(
+                                mode: Mode.MENU,
+                                showSelectedItem: true,
+                                items: districtList,
+                                label: "select dist",
+                                hint: "select dist",
+                                popupItemDisabled: (String s) =>
+                                    s.startsWith('I'),
+                                onChanged: (val) {
                                   setState(() {
-                                    _characters = value;
-                                    deafultAgeGroup =
-                                        EnumToString.convertToString(value);
+                                    defaultDist = val;
                                   });
                                 },
-                              ),
-                              Flexible(
-                                child: new Text(
-                                  'ageAbove45',
-                                  style: new TextStyle(
-                                    fontSize: 16.0,
+                                selectedItem: defaultDist,
+                              )
+                            : CircularProgressIndicator())
+                        : SizedBox(
+                            height: 20,
+                          ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Divider(),
+                    Text("Select date range"),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton.icon(
+                                onPressed: () {
+                                  _selectDateStart(context);
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.white10),
+                                ),
+                                icon: Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.blueGrey[900],
+                                ),
+                                label: Text(
+                                  "start date",
+                                  style: TextStyle(color: Colors.blueGrey[900]),
+                                )),
+                            Text(DateFormat('dd-MM-yyyy')
+                                .format(DateTime.parse(autoRunStartDate))),
+                          ],
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton.icon(
+                                onPressed: () {
+                                  _selectDateEnd(context);
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.white10),
+                                ),
+                                icon: Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.blueGrey[900],
+                                ),
+                                label: Text("end date",
+                                    style: TextStyle(
+                                        color: Colors.blueGrey[900]))),
+                            Text(DateFormat('dd-MM-yyyy')
+                                .format(DateTime.parse(autoRunEndDate))),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Divider(),
+                    Column(
+                      children: [
+                        Center(child: Text("pincode")),
+                        Divider(),
+                        Center(
+                          child: Container(
+                            width: width / 2.5,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                labelText: "pincode",
+                                labelStyle: TextStyle(color: Colors.white),
+                                fillColor: Colors.white,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blueGrey[900],
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.blueGrey[400],
+                                    width: 2.0,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  DropdownSearch<String>(
-                      mode: Mode.MENU,
-                      showSelectedItem: true,
-                      items: stateList,
-                      label: "Select State",
-                      hint: "country in menu mode",
-                      popupItemDisabled: (String s) => s.startsWith('I'),
-                      onChanged: (value) {
-                        setState(() {
-                          defaultState = value;
-                          isDistLoaded = false;
-                          getDist();
-                        });
-                      },
-                      selectedItem: defaultState),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  isStateLoaded
-                      ? (isDistLoaded
-                          ? DropdownSearch<String>(
-                              mode: Mode.MENU,
-                              showSelectedItem: true,
-                              items: districtList,
-                              label: "select dist",
-                              hint: "select dist",
-                              popupItemDisabled: (String s) =>
-                                  s.startsWith('I'),
+                              keyboardType: TextInputType.number,
+                              initialValue: deafaultPincode,
                               onChanged: (val) {
                                 setState(() {
-                                  defaultDist = val;
+                                  deafaultPincode = val;
                                 });
                               },
-                              selectedItem: defaultDist,
-                            )
-                          : CircularProgressIndicator())
-                      : SizedBox(
-                          height: 25,
-                        ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Divider(),
-                  Text("Select date range"),
-                  Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextButton.icon(
-                              onPressed: () {
-                                _selectDateStart(context);
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white10),
-                              ),
-                              icon: Icon(
-                                Icons.calendar_today,
-                                color: Colors.blueGrey[900],
-                              ),
-                              label: Text(
-                                "start date",
-                                style: TextStyle(color: Colors.blueGrey[900]),
-                              )),
-                          Text(DateFormat('dd-MM-yyyy')
-                              .format(DateTime.parse(autoRunStartDate))),
-                        ],
-                      ),
-
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextButton.icon(
-                              onPressed: () {
-                                _selectDateEnd(context);
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.white10),
-                              ),
-                              icon: Icon(
-                                Icons.calendar_today,
-                                color: Colors.blueGrey[900],
-                              ),
-                              label: Text("end date",
-                                  style:
-                                      TextStyle(color: Colors.blueGrey[900]))),
-                          Text(DateFormat('dd-MM-yyyy')
-                              .format(DateTime.parse(autoRunEndDate))),
-                        ],
-                      ),
-                      // Row(
-                      //   mainAxisSize: MainAxisSize.min,
-                      //   children: [
-                      //     Text('refresh time'),
-                      //     DropdownButton(
-                      //       value: aRReRunTimeInMin,
-                      //       items: <DropdownMenuItem>[
-                      //         DropdownMenuItem(
-                      //           value: '5',
-                      //           child: Text('5 min'),
-                      //         ),
-                      //         DropdownMenuItem(
-                      //           value: '10',
-                      //           child: Text('10 min'),
-                      //         ),
-                      //         DropdownMenuItem(
-                      //           value: '15',
-                      //           child: Text('15 min'),
-                      //         ),
-                      //         DropdownMenuItem(
-                      //           value: '30',
-                      //           child: Text('30 min'),
-                      //         ),
-                      //         DropdownMenuItem(
-                      //           value: '45',
-                      //           child: Text('45 min'),
-                      //         ),
-                      //         DropdownMenuItem(
-                      //           value: '60',
-                      //           child: Text('60 min'),
-                      //         ),
-                      //       ],
-                      //       onChanged: (value) {
-                      //         setState(() {
-                      //           aRReRunTimeInMin = value;
-                      //         });
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Divider(),
-                  Column(
-                    children: [
-                      Center(child: Text("pincode")),
-                      Divider(),
-                      Center(
-                        child: Container(
-                          width: width / 2.5,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              labelText: "pincode",
-                              labelStyle: TextStyle(color: Colors.white),
-                              fillColor: Colors.white,
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: Colors.blueGrey[900],
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: Colors.blueGrey[400],
-                                  width: 2.0,
-                                ),
-                              ),
                             ),
-                            keyboardType: TextInputType.number,
-                            initialValue: deafaultPincode,
-                            onChanged: (val) {
-                              setState(() {
-                                deafaultPincode = val;
-                              });
-                            },
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                ],
+                      ],
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -504,6 +533,7 @@ class _SettingsState extends State<Settings> {
       tempCookie.addToCookie('deafultAgeGroup', deafultAgeGroup);
       tempCookie.addToCookie('autoRunStartDate', autoRunStartDate);
       tempCookie.addToCookie('autoRunEndDate', autoRunEndDate);
+      tempCookie.addToCookie('deafultDose', deafultDose);
       // tempCookie.addToCookie('aRReRunTimeInMin', aRReRunTimeInMin);
       // tempCookie.addToCookie('isAutoRunActive', isAutoRunActive);
       setState(() {

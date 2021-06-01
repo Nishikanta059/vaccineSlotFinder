@@ -44,15 +44,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -66,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String selectedDist;
   String selectedPin;
   int _MinimunAgeForSearch;
+  String _DoseForSearch;
   DateTime selectedDate = DateTime.now();
   Country india;
   SelcState tempState;
@@ -73,21 +65,58 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isStateSelected = false;
   bool isStateLoaded = false;
   bool isDistLoaded = false;
-  bool isSlotAvailable = false;
-  bool isSlotAvailable2 = false;
-  bool isSlotAvailable3 = false;
-  bool isSlotAvailable4 = false;
-  bool isSlotAvailabled = false;
-  bool isSearchDone = false;
-  // bool isSearchStart = false;
-  int availableSlots = 0;
-  int availableSlots2 = 0;
-  int availableSlots3 = 0;
-  int availableSlots4 = 0;
-  int availableSlotsd = 0;
-  DistCenters tempCenters, tempCenters2, tempCenters3, tempCenters4;
+  static bool isSlotAvailable1 = false;
+  static bool isSlotAvailable2 = false;
+  static bool isSlotAvailable3 = false;
+  static bool isSlotAvailable4 = false;
+  static bool isSlotAvailabled = false;
+  // static bool isSearchDone = false;
+  // static bool isSearchStart = false;
+  static int availableSlots1 = 0;
+  static int availableSlots2 = 0;
+  static int availableSlots3 = 0;
+  static int availableSlots4 = 0;
+  static int availableSlotsd = 0;
+  static int availableSlots1d1 = 0;
+  static int availableSlots2d1 = 0;
+  static int availableSlots3d1 = 0;
+  static int availableSlots4d1 = 0;
+  int availableSlotsdd1 = 0;
+  static int availableSlots1d2 = 0;
+  static int availableSlots2d2 = 0;
+  static int availableSlots3d2 = 0;
+  static int availableSlots4d2 = 0;
+  int availableSlotsdd2 = 0;
+
+  static DistCenters tempCenters1, tempCenters2, tempCenters3, tempCenters4;
+  var availableSlots = [
+    availableSlots1,
+    availableSlots2,
+    availableSlots3,
+    availableSlots4
+  ];
+  var availableSlotsd1 = [
+    availableSlots1d1,
+    availableSlots2d1,
+    availableSlots3d1,
+    availableSlots4d1
+  ];
+  var availableSlotsd2 = [
+    availableSlots1d2,
+    availableSlots2d2,
+    availableSlots3d2,
+    availableSlots4d2
+  ];
+  var isSlotAvailable = [
+    isSlotAvailable1,
+    isSlotAvailable2,
+    isSlotAvailable3,
+    isSlotAvailable4
+  ];
+  var tempCenters = [tempCenters1, tempCenters2, tempCenters3, tempCenters4];
 
   minAge _character;
+  dose _dose;
   String _url = "https://selfregistration.cowin.gov.in/";
   @override
   void initState() {
@@ -101,6 +130,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("----==refresh==-------");
+    // print("-----------slot------test------" + availableSlots[0].toString());
+    // print("-----------slot------testd1------" + availableSlotsd1[0].toString());
+    // print("-----------slot------testd2------" + availableSlotsd2[0].toString());
     // print(isSearchStart.toString());
     var screenSize = MediaQuery.of(context).size;
     var width = screenSize.width;
@@ -298,6 +330,60 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                new Radio(
+                                  value: dose.dose1,
+                                  groupValue: _dose,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dose = value;
+                                      _DoseForSearch = "dose1";
+                                    });
+                                  },
+                                ),
+                                Flexible(
+                                  child: new Text(
+                                    'Dose 1',
+                                    style: new TextStyle(fontSize: 16.0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                new Radio(
+                                  value: dose.dose2,
+                                  groupValue: _dose,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dose = value;
+                                      _DoseForSearch = "dose2";
+                                    });
+                                  },
+                                ),
+                                Flexible(
+                                  child: new Text(
+                                    'Dose 2',
+                                    style: new TextStyle(
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
                           height: 30,
                         ),
                         ElevatedButton.icon(
@@ -310,20 +396,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                   tempDistID = element.districtId;
                                 }
                               });
-                              await getCenterAvailBilityNsd(tempDistID);
-                              await getCenterAvailBilityNsd2(tempDistID);
-                              await getCenterAvailBilityNsd3(tempDistID);
-                              await getCenterAvailBilityNsd4(tempDistID);
+                              await getCenterAvailBilityNsdF(tempDistID);
+                              // await getCenterAvailBilityNsd2(tempDistID);
+                              // await getCenterAvailBilityNsd3(tempDistID);
+                              // await getCenterAvailBilityNsd4(tempDistID);
                               getCenterAvailBilityDR();
                             } else {
-                              await getCenterAvailBilityNsdpin(
+                              await getCenterAvailBilityNsdpinF(
                                   int.parse(selectedPin));
-                              await getCenterAvailBilityNsdpin2(
-                                  int.parse(selectedPin));
-                              await getCenterAvailBilityNsdpin3(
-                                  int.parse(selectedPin));
-                              await getCenterAvailBilityNsdpin4(
-                                  int.parse(selectedPin));
+                              // await getCenterAvailBilityNsdpin2(
+                              //     int.parse(selectedPin));
+                              // await getCenterAvailBilityNsdpin3(
+                              //     int.parse(selectedPin));
+                              // await getCenterAvailBilityNsdpin4(
+                              //     int.parse(selectedPin));
                               getCenterAvailBilityDR();
                             }
 
@@ -359,7 +445,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       DateFormat('dd-MM-yyyy').format(
                                           DateTime.parse(autoRunEndDate))),
                                   Divider(),
-                                  Text('slots available = $availableSlotsd')
+                                  Text(
+                                      'total slots available = $availableSlotsd')
                                 ],
                               )
                             : Column(
@@ -372,14 +459,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                       DateFormat('dd-MM-yyyy').format(
                                           DateTime.parse(autoRunEndDate))),
                                   Divider(),
-                                  Text('slots available = $availableSlotsd'),
+                                  Wrap(
+                                    spacing: 10,
+                                    children: [
+                                      Text(
+                                          'Dose 1 slots = ' +
+                                              availableSlotsdd1.toString(),
+                                          style: TextStyle(
+                                              color: Colors.lightGreen)),
+                                      Text(
+                                          'Dose 2 slots = ' +
+                                              availableSlotsdd2.toString(),
+                                          style: TextStyle(
+                                              color: Colors.greenAccent)),
+                                    ],
+                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  TextButton(
-                                    onPressed: _launchURL,
-                                    child: Text('Book Now'),
-                                  ),
+                                  _DoseForSearch == "dose1" &&
+                                              availableSlotsdd1 != 0 ||
+                                          _DoseForSearch == "dose2" &&
+                                              availableSlotsdd2 != 0
+                                      ? TextButton(
+                                          onPressed: _launchURL,
+                                          child: Text('Book Now'),
+                                        )
+                                      : SizedBox.shrink(),
                                 ],
                               )),
                         SizedBox(
@@ -388,13 +494,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         // isSearchStart
                         //     ? CircularProgressIndicator()
                         //     :
-                        (!isSlotAvailable
+                        (!isSlotAvailable[0]
                             ? Column(
                                 children: [
                                   Divider(),
                                   Text('for next 7days form today'),
                                   Divider(),
-                                  Text('slots available = $availableSlots')
+                                  Text('total slots available = ' +
+                                      availableSlots[0].toString())
                                 ],
                               )
                             : Column(
@@ -402,26 +509,46 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Divider(),
                                   Text('for next 7days form today'),
                                   Divider(),
-                                  Text('slots available = $availableSlots'),
+                                  Wrap(
+                                    spacing: 10,
+                                    children: [
+                                      Text(
+                                          'Dose 1 slots = ' +
+                                              availableSlotsd1[0].toString(),
+                                          style: TextStyle(
+                                              color: Colors.lightGreen)),
+                                      Text(
+                                          'Dose 2 slots = ' +
+                                              availableSlotsd2[0].toString(),
+                                          style: TextStyle(
+                                              color: Colors.greenAccent)),
+                                    ],
+                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  TextButton(
-                                    onPressed: _launchURL,
-                                    child: Text('Book Now'),
-                                  ),
+                                  _DoseForSearch == "dose1" &&
+                                              availableSlotsd1[0] != 0 ||
+                                          _DoseForSearch == "dose2" &&
+                                              availableSlotsd2[0] != 0
+                                      ? TextButton(
+                                          onPressed: _launchURL,
+                                          child: Text('Book Now'),
+                                        )
+                                      : SizedBox.shrink(),
                                 ],
                               )),
                         // isSearchStart
                         //     ? CircularProgressIndicator()
                         //     :
-                        (!isSlotAvailable2
+                        (!isSlotAvailable[1]
                             ? Column(
                                 children: [
                                   Divider(),
                                   Text('for next 7-14 days form today'),
                                   Divider(),
-                                  Text('slots available = $availableSlots2')
+                                  Text(
+                                      'total slots available = $availableSlots2')
                                 ],
                               )
                             : Column(
@@ -429,26 +556,46 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Divider(),
                                   Text('for next 7-14 days form today'),
                                   Divider(),
-                                  Text('slots available = $availableSlots2'),
+                                  Wrap(
+                                    spacing: 10,
+                                    children: [
+                                      Text(
+                                          'Dose 1 slots = ' +
+                                              availableSlotsd1[1].toString(),
+                                          style: TextStyle(
+                                              color: Colors.lightGreen)),
+                                      Text(
+                                          'Dose 2 slots = ' +
+                                              availableSlotsd2[1].toString(),
+                                          style: TextStyle(
+                                              color: Colors.greenAccent)),
+                                    ],
+                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  TextButton(
-                                    onPressed: _launchURL,
-                                    child: Text('Book Now'),
-                                  ),
+                                  _DoseForSearch == "dose1" &&
+                                              availableSlotsd1[1] != 0 ||
+                                          _DoseForSearch == "dose2" &&
+                                              availableSlotsd2[1] != 0
+                                      ? TextButton(
+                                          onPressed: _launchURL,
+                                          child: Text('Book Now'),
+                                        )
+                                      : SizedBox.shrink(),
                                 ],
                               )),
                         // isSearchStart
                         //     ? CircularProgressIndicator()
                         //     :
-                        (!isSlotAvailable3
+                        (!isSlotAvailable[2]
                             ? Column(
                                 children: [
                                   Divider(),
                                   Text('for next 14-21 days form today'),
                                   Divider(),
-                                  Text('slots available = $availableSlots3')
+                                  Text(
+                                      'total slots available = $availableSlots3')
                                 ],
                               )
                             : Column(
@@ -456,26 +603,46 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Divider(),
                                   Text('for next 14-21 days form today'),
                                   Divider(),
-                                  Text('slots available = $availableSlots3'),
+                                  Wrap(
+                                    spacing: 10,
+                                    children: [
+                                      Text(
+                                          'Dose 1 slots = ' +
+                                              availableSlotsd1[2].toString(),
+                                          style: TextStyle(
+                                              color: Colors.lightGreen)),
+                                      Text(
+                                          'Dose 2 slots = ' +
+                                              availableSlotsd2[2].toString(),
+                                          style: TextStyle(
+                                              color: Colors.greenAccent)),
+                                    ],
+                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  TextButton(
-                                    onPressed: _launchURL,
-                                    child: Text('Book Now'),
-                                  ),
+                                  _DoseForSearch == "dose1" &&
+                                              availableSlotsd1[2] != 0 ||
+                                          _DoseForSearch == "dose2" &&
+                                              availableSlotsd2[2] != 0
+                                      ? TextButton(
+                                          onPressed: _launchURL,
+                                          child: Text('Book Now'),
+                                        )
+                                      : SizedBox.shrink(),
                                 ],
                               )),
                         // isSearchStart
                         //     ? CircularProgressIndicator()
                         //     :
-                        (!isSlotAvailable4
+                        (!isSlotAvailable[3]
                             ? Column(
                                 children: [
                                   Divider(),
                                   Text('for next 21-28 days form today'),
                                   Divider(),
-                                  Text('slots available = $availableSlots4')
+                                  Text(
+                                      'total slots available = $availableSlots4')
                                 ],
                               )
                             : Column(
@@ -483,14 +650,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Divider(),
                                   Text('for next 21-28 days form today'),
                                   Divider(),
-                                  Text('slots available = $availableSlots4'),
+                                  Wrap(
+                                    spacing: 10,
+                                    children: [
+                                      Text(
+                                          'Dose 1 slots = ' +
+                                              availableSlotsd1[3].toString(),
+                                          style: TextStyle(
+                                              color: Colors.lightGreen)),
+                                      Text(
+                                          'Dose 2 slots = ' +
+                                              availableSlotsd2[3].toString(),
+                                          style: TextStyle(
+                                              color: Colors.greenAccent)),
+                                    ],
+                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  TextButton(
-                                    onPressed: _launchURL,
-                                    child: Text('Book Now'),
-                                  ),
+                                  _DoseForSearch == "dose1" &&
+                                              availableSlotsd1[3] != 0 ||
+                                          _DoseForSearch == "dose2" &&
+                                              availableSlotsd2[3] != 0
+                                      ? TextButton(
+                                          onPressed: _launchURL,
+                                          child: Text('Book Now'),
+                                        )
+                                      : SizedBox.shrink(),
                                 ],
                               )),
                       ],
@@ -585,395 +771,466 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  getCenterAvailBilityNsd(int distID) async {
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    availableSlots = 0;
-    isSlotAvailable = false;
-    print("nsd 1");
-    print(formatted);
+  getCenterAvailBilityNsdF(int distID) async {
+    for (int z = 0; z <= 3; z++) {
+      final DateTime now = DateTime.now().add(Duration(days: 7 * z));
+      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+      final String formatted = formatter.format(now);
+      availableSlots[z] = 0;
+      availableSlotsd1[z] = 0;
+      availableSlotsd2[z] = 0;
+      isSlotAvailable[z] = false;
+      print("nsd+$z");
+      print(formatted);
 
-    var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
+      var url = Uri.parse(
+          'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
 
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      tempCenters = DistCenters.fromJson(jsonResponse);
-      print(tempCenters.centers.length);
-      tempCenters.centers.forEach((val) {
-        val.sessions.forEach((element) {
-          if (_MinimunAgeForSearch == element.minAgeLimit) {
-            availableSlots += element.availableCapacity;
-          }
+        tempCenters[z] = DistCenters.fromJson(jsonResponse);
+        print(tempCenters[z].centers.length);
+        tempCenters[z].centers.forEach((val) {
+          val.sessions.forEach((element) {
+            if (_MinimunAgeForSearch == element.minAgeLimit) {
+              availableSlots[z] += element.availableCapacity;
+
+              availableSlotsd1[z] += element.availableCapacityDose1;
+              availableSlotsd2[z] += element.availableCapacityDose2;
+            }
+          });
         });
-      });
-      setState(() {
-        if (availableSlots != 0) isSlotAvailable = true;
+        setState(() {
+          if (availableSlots[z] != 0) isSlotAvailable[z] = true;
 
-        // isSearchStart = false;
-      });
-    } else {
-      setState(() {
-        // isSearchStart = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
+          // isSearchStart = false;
+        });
+        print("-----------slot------$z------" + availableSlots[z].toString());
+      } else {
+        setState(() {
+          // isSearchStart = false;
+        });
+        print('Request failed with status: ${response.statusCode}.');
+      }
     }
   }
 
-  getCenterAvailBilityNsdpin(int pin) async {
-    print("--------pin-------");
-    print(pin.toString());
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    availableSlots = 0;
-    isSlotAvailable = false;
-    print(formatted);
+  getCenterAvailBilityNsdpinF(int pin) async {
+    for (int z = 0; z <= 3; z++) {
+      print("--------pin-------");
+      print(pin.toString());
+      final DateTime now = DateTime.now().add(Duration(days: 7 * z));
+      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+      final String formatted = formatter.format(now);
+      availableSlots[z] = 0;
+      availableSlotsd1[z] = 0;
+      availableSlotsd2[z] = 0;
+      isSlotAvailable[z] = false;
+      print(formatted);
 
-    var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
+      var url = Uri.parse(
+          'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
 
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      tempCenters = DistCenters.fromJson(jsonResponse);
-      print(tempCenters.centers.length);
-      tempCenters.centers.forEach((val) {
-        val.sessions.forEach((element) {
-          if (_MinimunAgeForSearch == element.minAgeLimit) {
-            availableSlots += element.availableCapacity;
-          }
+        tempCenters[z] = DistCenters.fromJson(jsonResponse);
+        print(tempCenters[z].centers.length);
+        tempCenters[z].centers.forEach((val) {
+          val.sessions.forEach((element) {
+            if (_MinimunAgeForSearch == element.minAgeLimit) {
+              availableSlots[z] += element.availableCapacity;
+
+              availableSlotsd1[z] += element.availableCapacityDose1;
+              availableSlotsd2[z] += element.availableCapacityDose2;
+            }
+          });
         });
-      });
-      setState(() {
-        if (availableSlots != 0) isSlotAvailable = true;
+        setState(() {
+          if (availableSlots[z] != 0) isSlotAvailable[z] = true;
 
-        // isSearchStart = false;
-      });
-    } else {
-      setState(() {
-        // isSearchStart = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
+          // isSearchStart = false;
+        });
+        print(
+            "-----------slot pin------$z------" + availableSlots[z].toString());
+      } else {
+        setState(() {
+          // isSearchStart = false;
+        });
+        print('Request failed with status: ${response.statusCode}.');
+      }
     }
   }
+  // getCenterAvailBilityNsd(int distID) async {
+  //   final DateTime now = DateTime.now();
+  //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  //   final String formatted = formatter.format(now);
+  //   availableSlots1 = 0;
+  //   availableSlots1d2 = 0;
+  //   availableSlots1d1 = 0;
+  //   isSlotAvailable1 = false;
+  //   print("nsd 1");
+  //   print(formatted);
+  //
+  //   var url = Uri.parse(
+  //       'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
+  //
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse =
+  //     convert.jsonDecode(response.body) as Map<String, dynamic>;
+  //
+  //     tempCenters = DistCenters.fromJson(jsonResponse);
+  //     print(tempCenters.centers.length);
+  //     tempCenters.centers.forEach((val) {
+  //       val.sessions.forEach((element) {
+  //         if (_MinimunAgeForSearch == element.minAgeLimit) {
+  //           availableSlots1 += element.availableCapacity;
+  //           availableSlots1d1 += element.availableCapacityDose1;
+  //           availableSlots1d2 += element.availableCapacityDose2;
+  //         }
+  //       });
+  //     });
+  //     setState(() {
+  //       if (availableSlots1 != 0) isSlotAvailable1 = true;
+  //
+  //       // isSearchStart = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       // isSearchStart = false;
+  //     });
+  //     print('Request failed with status: ${response.statusCode}.');
+  //   }
+  // }
+  // getCenterAvailBilityNsdpin(int pin) async {
+  //   print("--------pin-------");
+  //   print(pin.toString());
+  //   final DateTime now = DateTime.now();
+  //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  //   final String formatted = formatter.format(now);
+  //   availableSlots1 = 0;
+  //   isSlotAvailable1 = false;
+  //   print(formatted);
+  //
+  //   var url = Uri.parse(
+  //       'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
+  //
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse =
+  //         convert.jsonDecode(response.body) as Map<String, dynamic>;
+  //
+  //     tempCenters = DistCenters.fromJson(jsonResponse);
+  //     print(tempCenters.centers.length);
+  //     tempCenters.centers.forEach((val) {
+  //       val.sessions.forEach((element) {
+  //         if (_MinimunAgeForSearch == element.minAgeLimit) {
+  //           availableSlots1 += element.availableCapacity;
+  //         }
+  //       });
+  //     });
+  //     setState(() {
+  //       if (availableSlots1 != 0) isSlotAvailable1 = true;
+  //
+  //       // isSearchStart = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       // isSearchStart = false;
+  //     });
+  //     print('Request failed with status: ${response.statusCode}.');
+  //   }
+  // }
 
-  getCenterAvailBilityNsd2(int distID) async {
-    final DateTime now = DateTime.now().add(const Duration(days: 7));
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    availableSlots2 = 0;
-    isSlotAvailable2 = false;
-    print("nsd2");
-    print(formatted);
-
-    var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
-
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
-
-      tempCenters2 = DistCenters.fromJson(jsonResponse);
-      print(tempCenters2.centers.length);
-      tempCenters2.centers.forEach((val) {
-        val.sessions.forEach((element) {
-          if (_MinimunAgeForSearch == element.minAgeLimit) {
-            availableSlots2 += element.availableCapacity;
-          }
-        });
-      });
-      setState(() {
-        if (availableSlots2 != 0) isSlotAvailable2 = true;
-
-        // isSearchStart = false;
-      });
-    } else {
-      setState(() {
-        // isSearchStart = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
-    }
-  }
-
-  getCenterAvailBilityNsdpin2(int pin) async {
-    final DateTime now = DateTime.now().add(const Duration(days: 7));
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    availableSlots2 = 0;
-    isSlotAvailable2 = false;
-    print(formatted);
-
-    var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
-
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
-
-      tempCenters2 = DistCenters.fromJson(jsonResponse);
-      print(tempCenters2.centers.length);
-      tempCenters2.centers.forEach((val) {
-        val.sessions.forEach((element) {
-          if (_MinimunAgeForSearch == element.minAgeLimit) {
-            availableSlots2 += element.availableCapacity;
-          }
-        });
-      });
-      setState(() {
-        if (availableSlots2 != 0) isSlotAvailable2 = true;
-
-        // isSearchStart = false;
-      });
-    } else {
-      setState(() {
-        // isSearchStart = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
-    }
-  }
-
-  getCenterAvailBilityNsd3(int distID) async {
-    final DateTime now = DateTime.now().add(const Duration(days: 14));
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    availableSlots3 = 0;
-    isSlotAvailable3 = false;
-    print("nsd3");
-    print(formatted);
-
-    var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
-
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
-
-      tempCenters3 = DistCenters.fromJson(jsonResponse);
-      print(tempCenters3.centers.length);
-      tempCenters3.centers.forEach((val) {
-        val.sessions.forEach((element) {
-          if (_MinimunAgeForSearch == element.minAgeLimit) {
-            availableSlots3 += element.availableCapacity;
-          }
-        });
-      });
-      setState(() {
-        if (availableSlots3 != 0) isSlotAvailable3 = true;
-
-        // isSearchStart = false;
-      });
-    } else {
-      setState(() {
-        // isSearchStart = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
-    }
-  }
-
-  getCenterAvailBilityNsdpin3(int pin) async {
-    final DateTime now = DateTime.now().add(const Duration(days: 14));
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    availableSlots3 = 0;
-    isSlotAvailable3 = false;
-    print(formatted);
-
-    var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
-
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
-
-      tempCenters3 = DistCenters.fromJson(jsonResponse);
-      print(tempCenters3.centers.length);
-      tempCenters3.centers.forEach((val) {
-        val.sessions.forEach((element) {
-          if (_MinimunAgeForSearch == element.minAgeLimit) {
-            availableSlots3 += element.availableCapacity;
-          }
-        });
-      });
-      setState(() {
-        if (availableSlots3 != 0) isSlotAvailable3 = true;
-
-        // isSearchStart = false;
-      });
-    } else {
-      setState(() {
-        // isSearchStart = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
-    }
-  }
-
-  getCenterAvailBilityNsd4(int distID) async {
-    final DateTime now = DateTime.now().add(const Duration(days: 21));
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    availableSlots4 = 0;
-    isSlotAvailable4 = false;
-    print(formatted);
-    print("nsd3");
-
-    var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
-
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
-
-      tempCenters4 = DistCenters.fromJson(jsonResponse);
-      print(tempCenters4.centers.length);
-      tempCenters4.centers.forEach((val) {
-        val.sessions.forEach((element) {
-          if (_MinimunAgeForSearch == element.minAgeLimit) {
-            availableSlots4 += element.availableCapacity;
-          }
-        });
-      });
-      setState(() {
-        if (availableSlots4 != 0) isSlotAvailable4 = true;
-
-        // isSearchStart = false;
-      });
-    } else {
-      setState(() {
-        // isSearchStart = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
-    }
-  }
-
-  getCenterAvailBilityNsdpin4(int pin) async {
-    final DateTime now = DateTime.now().add(const Duration(days: 21));
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    availableSlots4 = 0;
-    isSlotAvailable4 = false;
-    print(formatted);
-
-    var url = Uri.parse(
-        'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
-
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
-
-      tempCenters4 = DistCenters.fromJson(jsonResponse);
-      print(tempCenters4.centers.length);
-      tempCenters4.centers.forEach((val) {
-        val.sessions.forEach((element) {
-          if (_MinimunAgeForSearch == element.minAgeLimit) {
-            availableSlots4 += element.availableCapacity;
-          }
-        });
-      });
-      setState(() {
-        if (availableSlots4 != 0) isSlotAvailable4 = true;
-
-        // isSearchStart = false;
-      });
-    } else {
-      setState(() {
-        // isSearchStart = false;
-      });
-      print('Request failed with status: ${response.statusCode}.');
-    }
-  }
+  // getCenterAvailBilityNsd2(int distID) async {
+  //   final DateTime now = DateTime.now().add(const Duration(days: 7));
+  //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  //   final String formatted = formatter.format(now);
+  //   availableSlots2 = 0;
+  //   isSlotAvailable2 = false;
+  //   print("nsd2");
+  //   print(formatted);
+  //
+  //   var url = Uri.parse(
+  //       'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
+  //
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse =
+  //         convert.jsonDecode(response.body) as Map<String, dynamic>;
+  //
+  //     tempCenters2 = DistCenters.fromJson(jsonResponse);
+  //     print(tempCenters2.centers.length);
+  //     tempCenters2.centers.forEach((val) {
+  //       val.sessions.forEach((element) {
+  //         if (_MinimunAgeForSearch == element.minAgeLimit) {
+  //           availableSlots2 += element.availableCapacity;
+  //         }
+  //       });
+  //     });
+  //     setState(() {
+  //       if (availableSlots2 != 0) isSlotAvailable2 = true;
+  //
+  //       // isSearchStart = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       // isSearchStart = false;
+  //     });
+  //     print('Request failed with status: ${response.statusCode}.');
+  //   }
+  // }
+  //
+  // getCenterAvailBilityNsdpin2(int pin) async {
+  //   final DateTime now = DateTime.now().add(const Duration(days: 7));
+  //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  //   final String formatted = formatter.format(now);
+  //   availableSlots2 = 0;
+  //   isSlotAvailable2 = false;
+  //   print(formatted);
+  //
+  //   var url = Uri.parse(
+  //       'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
+  //
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse =
+  //         convert.jsonDecode(response.body) as Map<String, dynamic>;
+  //
+  //     tempCenters2 = DistCenters.fromJson(jsonResponse);
+  //     print(tempCenters2.centers.length);
+  //     tempCenters2.centers.forEach((val) {
+  //       val.sessions.forEach((element) {
+  //         if (_MinimunAgeForSearch == element.minAgeLimit) {
+  //           availableSlots2 += element.availableCapacity;
+  //         }
+  //       });
+  //     });
+  //     setState(() {
+  //       if (availableSlots2 != 0) isSlotAvailable2 = true;
+  //
+  //       // isSearchStart = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       // isSearchStart = false;
+  //     });
+  //     print('Request failed with status: ${response.statusCode}.');
+  //   }
+  // }
+  //
+  // getCenterAvailBilityNsd3(int distID) async {
+  //   final DateTime now = DateTime.now().add(const Duration(days: 14));
+  //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  //   final String formatted = formatter.format(now);
+  //   availableSlots3 = 0;
+  //   isSlotAvailable3 = false;
+  //   print("nsd3");
+  //   print(formatted);
+  //
+  //   var url = Uri.parse(
+  //       'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
+  //
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse =
+  //         convert.jsonDecode(response.body) as Map<String, dynamic>;
+  //
+  //     tempCenters3 = DistCenters.fromJson(jsonResponse);
+  //     print(tempCenters3.centers.length);
+  //     tempCenters3.centers.forEach((val) {
+  //       val.sessions.forEach((element) {
+  //         if (_MinimunAgeForSearch == element.minAgeLimit) {
+  //           availableSlots3 += element.availableCapacity;
+  //         }
+  //       });
+  //     });
+  //     setState(() {
+  //       if (availableSlots3 != 0) isSlotAvailable3 = true;
+  //
+  //       // isSearchStart = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       // isSearchStart = false;
+  //     });
+  //     print('Request failed with status: ${response.statusCode}.');
+  //   }
+  // }
+  //
+  // getCenterAvailBilityNsdpin3(int pin) async {
+  //   final DateTime now = DateTime.now().add(const Duration(days: 14));
+  //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  //   final String formatted = formatter.format(now);
+  //   availableSlots3 = 0;
+  //   isSlotAvailable3 = false;
+  //   print(formatted);
+  //
+  //   var url = Uri.parse(
+  //       'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
+  //
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse =
+  //         convert.jsonDecode(response.body) as Map<String, dynamic>;
+  //
+  //     tempCenters3 = DistCenters.fromJson(jsonResponse);
+  //     print(tempCenters3.centers.length);
+  //     tempCenters3.centers.forEach((val) {
+  //       val.sessions.forEach((element) {
+  //         if (_MinimunAgeForSearch == element.minAgeLimit) {
+  //           availableSlots3 += element.availableCapacity;
+  //         }
+  //       });
+  //     });
+  //     setState(() {
+  //       if (availableSlots3 != 0) isSlotAvailable3 = true;
+  //
+  //       // isSearchStart = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       // isSearchStart = false;
+  //     });
+  //     print('Request failed with status: ${response.statusCode}.');
+  //   }
+  // }
+  //
+  // getCenterAvailBilityNsd4(int distID) async {
+  //   final DateTime now = DateTime.now().add(const Duration(days: 21));
+  //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  //   final String formatted = formatter.format(now);
+  //   availableSlots4 = 0;
+  //   isSlotAvailable4 = false;
+  //   print(formatted);
+  //   print("nsd3");
+  //
+  //   var url = Uri.parse(
+  //       'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=$distID&date=$formatted');
+  //
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse =
+  //         convert.jsonDecode(response.body) as Map<String, dynamic>;
+  //
+  //     tempCenters4 = DistCenters.fromJson(jsonResponse);
+  //     print(tempCenters4.centers.length);
+  //     tempCenters4.centers.forEach((val) {
+  //       val.sessions.forEach((element) {
+  //         if (_MinimunAgeForSearch == element.minAgeLimit) {
+  //           availableSlots4 += element.availableCapacity;
+  //         }
+  //       });
+  //     });
+  //     setState(() {
+  //       if (availableSlots4 != 0) isSlotAvailable4 = true;
+  //
+  //       // isSearchStart = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       // isSearchStart = false;
+  //     });
+  //     print('Request failed with status: ${response.statusCode}.');
+  //   }
+  // }
+  //
+  // getCenterAvailBilityNsdpin4(int pin) async {
+  //   final DateTime now = DateTime.now().add(const Duration(days: 21));
+  //   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  //   final String formatted = formatter.format(now);
+  //   availableSlots4 = 0;
+  //   isSlotAvailable4 = false;
+  //   print(formatted);
+  //
+  //   var url = Uri.parse(
+  //       'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=$pin&date=$formatted');
+  //
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse =
+  //         convert.jsonDecode(response.body) as Map<String, dynamic>;
+  //
+  //     tempCenters4 = DistCenters.fromJson(jsonResponse);
+  //     print(tempCenters4.centers.length);
+  //     tempCenters4.centers.forEach((val) {
+  //       val.sessions.forEach((element) {
+  //         if (_MinimunAgeForSearch == element.minAgeLimit) {
+  //           availableSlots4 += element.availableCapacity;
+  //         }
+  //       });
+  //     });
+  //     setState(() {
+  //       if (availableSlots4 != 0) isSlotAvailable4 = true;
+  //
+  //       // isSearchStart = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       // isSearchStart = false;
+  //     });
+  //     print('Request failed with status: ${response.statusCode}.');
+  //   }
+  // }
 
   getCenterAvailBilityDR() {
     availableSlotsd = 0;
+    availableSlotsdd1 = 0;
+    availableSlotsdd2 = 0;
+
     isSlotAvailabled = false;
-    tempCenters.centers.forEach((val) {
-      val.sessions.forEach((element) {
-        String tempDate = element.date;
-        String formatedTempDate = tempDate.split("-")[2] +
-            "-" +
-            tempDate.split("-")[1] +
-            "-" +
-            tempDate.split("-")[0];
-        DateTime sessionDate = DateTime.parse(formatedTempDate);
-        DateTime DRstartDate = DateTime.parse(autoRunStartDate);
-        DateTime DRendDate = DateTime.parse(autoRunEndDate);
 
-        if (_MinimunAgeForSearch == element.minAgeLimit &&
-            (sessionDate.compareTo(DRstartDate) >= 0) &&
-            (DRendDate.compareTo(sessionDate) >= 0)) {
-          availableSlotsd += element.availableCapacity;
-        }
-      });
-    });
-    tempCenters2.centers.forEach((val) {
-      val.sessions.forEach((element) {
-        String tempDate = element.date;
-        String formatedTempDate = tempDate.split("-")[2] +
-            "-" +
-            tempDate.split("-")[1] +
-            "-" +
-            tempDate.split("-")[0];
-        DateTime sessionDate = DateTime.parse(formatedTempDate);
-        DateTime DRstartDate = DateTime.parse(autoRunStartDate);
-        DateTime DRendDate = DateTime.parse(autoRunEndDate);
+    for (int z = 0; z <= 3; z++) {
+      tempCenters[z].centers.forEach((val) {
+        val.sessions.forEach((element) {
+          String tempDate = element.date;
+          String formatedTempDate = tempDate.split("-")[2] +
+              "-" +
+              tempDate.split("-")[1] +
+              "-" +
+              tempDate.split("-")[0];
+          DateTime sessionDate = DateTime.parse(formatedTempDate);
+          DateTime DRstartDate = DateTime.parse(autoRunStartDate);
+          DateTime DRendDate = DateTime.parse(autoRunEndDate);
 
-        if (_MinimunAgeForSearch == element.minAgeLimit &&
-            (sessionDate.compareTo(DRstartDate) >= 0) &&
-            (DRendDate.compareTo(sessionDate) >= 0)) {
-          availableSlotsd += element.availableCapacity;
-        }
+          if (_MinimunAgeForSearch == element.minAgeLimit &&
+              (sessionDate.compareTo(DRstartDate) >= 0) &&
+              (DRendDate.compareTo(sessionDate) >= 0)) {
+            availableSlotsd += element.availableCapacity;
+            availableSlotsdd1 += element.availableCapacityDose1;
+            availableSlotsdd2 += element.availableCapacityDose2;
+          }
+        });
       });
-    });
-    tempCenters3.centers.forEach((val) {
-      val.sessions.forEach((element) {
-        String tempDate = element.date;
-        String formatedTempDate = tempDate.split("-")[2] +
-            "-" +
-            tempDate.split("-")[1] +
-            "-" +
-            tempDate.split("-")[0];
-        DateTime sessionDate = DateTime.parse(formatedTempDate);
-        DateTime DRstartDate = DateTime.parse(autoRunStartDate);
-        DateTime DRendDate = DateTime.parse(autoRunEndDate);
+    }
 
-        if (_MinimunAgeForSearch == element.minAgeLimit &&
-            (sessionDate.compareTo(DRstartDate) >= 0) &&
-            (DRendDate.compareTo(sessionDate) >= 0)) {
-          availableSlotsd += element.availableCapacity;
-        }
-      });
-    });
-    tempCenters4.centers.forEach((val) {
-      val.sessions.forEach((element) {
-        String tempDate = element.date;
-        String formatedTempDate = tempDate.split("-")[2] +
-            "-" +
-            tempDate.split("-")[1] +
-            "-" +
-            tempDate.split("-")[0];
-        DateTime sessionDate = DateTime.parse(formatedTempDate);
-        DateTime DRstartDate = DateTime.parse(autoRunStartDate);
-        DateTime DRendDate = DateTime.parse(autoRunEndDate);
-
-        if (_MinimunAgeForSearch == element.minAgeLimit &&
-            (sessionDate.compareTo(DRstartDate) >= 0) &&
-            (DRendDate.compareTo(sessionDate) >= 0)) {
-          availableSlotsd += element.availableCapacity;
-        }
-      });
-    });
+    // tempCenters[1].centers.forEach((val) {
+    //   val.sessions.forEach((element) {
+    //     String tempDate = element.date;
+    //     String formatedTempDate = tempDate.split("-")[2] +
+    //         "-" +
+    //         tempDate.split("-")[1] +
+    //         "-" +
+    //         tempDate.split("-")[0];
+    //     DateTime sessionDate = DateTime.parse(formatedTempDate);
+    //     DateTime DRstartDate = DateTime.parse(autoRunStartDate);
+    //     DateTime DRendDate = DateTime.parse(autoRunEndDate);
+    //
+    //     if (_MinimunAgeForSearch == element.minAgeLimit &&
+    //         (sessionDate.compareTo(DRstartDate) >= 0) &&
+    //         (DRendDate.compareTo(sessionDate) >= 0)) {
+    //       availableSlotsd += element.availableCapacity;
+    //     }
+    //   });
+    // });
+    //
+    //
     setState(() {
       if (availableSlotsd != 0) isSlotAvailabled = true;
       // isSearchStart = false;
@@ -1018,6 +1275,9 @@ class _MyHomePageState extends State<MyHomePage> {
     tempCookie.getCookie('deafultAgeGroup') != ""
         ? deafultAgeGroup = tempCookie.getCookie('deafultAgeGroup')
         : null;
+    tempCookie.getCookie('deafultDose') != ""
+        ? deafultDose = tempCookie.getCookie('deafultDose')
+        : null;
     tempCookie.getCookie('autoRunStartDate') != ""
         ? autoRunStartDate = tempCookie.getCookie('autoRunStartDate')
         : autoRunStartDate = DateTime.now().toString();
@@ -1036,6 +1296,8 @@ class _MyHomePageState extends State<MyHomePage> {
     selectedDist = defaultDist;
     selectedPin = deafaultPincode;
     _MinimunAgeForSearch = (deafultAgeGroup == "ageAbove45" ? 45 : 18);
+    _DoseForSearch = (deafultDose == "dose1" ? "dose1" : "dose2");
     _character = EnumToString.fromString(minAge.values, deafultAgeGroup);
+    _dose = EnumToString.fromString(dose.values, deafultDose);
   }
 }

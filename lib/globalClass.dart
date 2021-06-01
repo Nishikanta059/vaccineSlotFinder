@@ -3,9 +3,11 @@ import 'dart:html';
 import 'package:enum_to_string/enum_to_string.dart';
 
 enum minAge { age18to45, ageAbove45 }
+enum dose { dose1, dose2 }
 
 String deafultSearchMode = 'district';
 String deafultAgeGroup = EnumToString.convertToString(minAge.age18to45);
+String deafultDose = EnumToString.convertToString(dose.dose1);
 String deafaultPincode = '744101';
 String defaultState = 'Odisha';
 String defaultDist = 'Khurda';
@@ -207,6 +209,8 @@ class Sessions {
   String sessionId;
   String date;
   int availableCapacity;
+  int availableCapacityDose1;
+  int availableCapacityDose2;
   int minAgeLimit;
   String vaccine;
   List<String> slots;
@@ -215,6 +219,8 @@ class Sessions {
       {this.sessionId,
       this.date,
       this.availableCapacity,
+      this.availableCapacityDose1,
+      this.availableCapacityDose2,
       this.minAgeLimit,
       this.vaccine,
       this.slots});
@@ -223,6 +229,8 @@ class Sessions {
     sessionId = json['session_id'];
     date = json['date'];
     availableCapacity = json['available_capacity'];
+    availableCapacityDose1 = json['available_capacity_dose1'];
+    availableCapacityDose2 = json['available_capacity_dose2'];
     minAgeLimit = json['min_age_limit'];
     vaccine = json['vaccine'];
     slots = json['slots'].cast<String>();
@@ -233,6 +241,8 @@ class Sessions {
     data['session_id'] = this.sessionId;
     data['date'] = this.date;
     data['available_capacity'] = this.availableCapacity;
+    data['available_capacity_dose1'] = this.availableCapacityDose1;
+    data['available_capacity_dose2'] = this.availableCapacityDose2;
     data['min_age_limit'] = this.minAgeLimit;
     data['vaccine'] = this.vaccine;
     data['slots'] = this.slots;
