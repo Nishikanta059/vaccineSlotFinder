@@ -40,16 +40,16 @@ The project was developed during the COVID-19 pandemic to address the challenge 
 
 ## How It Works 🔍
 
--**Preference Setup**: Users can input and save their preferred state, district, and pincode during the initial setup.
--**Search Slots**: The app fetches real-time vaccine slot data from the CoWIN Public API based on the saved preferences.
--**Customization**: Users can filter search results by vaccine type (e.g., Covishield or Covaxin) and dose type (1st or 2nd).
--**One-Tap Access**: Once preferences are set, users can quickly check for slot availability with a single tap.
+- **Preference Setup**: Users can input and save their preferred state, district, and pincode during the initial setup.
+- **Search Slots**: The app fetches real-time vaccine slot data from the CoWIN Public API based on the saved preferences.
+- **Customization**: Users can filter search results by vaccine type (e.g., Covishield or Covaxin) and dose type (1st or 2nd).
+- **One-Tap Access**: Once preferences are set, users can quickly check for slot availability with a single tap.
 
---
+---
 
 ## Future Improvements 🚀
--**Push Notifications**: Notify users about real-time slot availability.
--**Language Support**: Add multilingual support for better accessibility.
--**Expanded Features**: Include details like vaccination center location and contact information.
--**Offline Mode**: Allow viewing cached results offline.
+- **Push Notifications**: Notify users about real-time slot availability.
+- **Language Support**: Add multilingual support for better accessibility.
+- **Expanded Features**: Include details like vaccination center location and contact information.
+- **Offline Mode**: Allow viewing cached results offline.
 
